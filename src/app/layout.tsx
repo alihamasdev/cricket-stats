@@ -3,6 +3,7 @@ import { Geist } from "next/font/google";
 
 import "./globals.css";
 
+import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider, ThemeToggler } from "@/components/theme";
 
 const geistSans = Geist({
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 							<ThemeToggler />
 						</header>
 						{children}
+						<Toaster position="bottom-right" duration={3000} />
 					</main>
 				</ThemeProvider>
 			</body>
