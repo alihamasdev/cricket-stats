@@ -1,5 +1,6 @@
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import "./globals.css";
 
@@ -26,7 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 							<h1 className="text-2xl font-semibold">Cricket Stats</h1>
 							<ThemeToggler />
 						</header>
-						{children}
+						<NuqsAdapter>{children}</NuqsAdapter>
 						<Toaster position="bottom-right" duration={3000} />
 					</main>
 				</ThemeProvider>
