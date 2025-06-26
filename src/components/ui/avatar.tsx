@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { UserRound } from "lucide-react";
 import { Avatar as AvatarPrimitive } from "radix-ui";
 
 import { cn } from "@/lib/utils";
@@ -9,7 +10,10 @@ function Avatar({ className, ...props }: React.ComponentProps<typeof AvatarPrimi
 	return (
 		<AvatarPrimitive.Root
 			data-slot="avatar"
-			className={cn("relative flex size-8 shrink-0 overflow-hidden rounded-full", className)}
+			className={cn(
+				"bg-muted relative flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-full",
+				className
+			)}
 			{...props}
 		/>
 	);
@@ -23,11 +27,9 @@ function AvatarImage({ className, ...props }: React.ComponentProps<typeof Avatar
 
 function AvatarFallback({ className, ...props }: React.ComponentProps<typeof AvatarPrimitive.Fallback>) {
 	return (
-		<AvatarPrimitive.Fallback
-			data-slot="avatar-fallback"
-			className={cn("bg-muted flex size-full items-center justify-center rounded-full", className)}
-			{...props}
-		/>
+		<AvatarPrimitive.Fallback data-slot="avatar-fallback" asChild {...props}>
+			<UserRound className={cn("size-1/2", className)} />
+		</AvatarPrimitive.Fallback>
 	);
 }
 

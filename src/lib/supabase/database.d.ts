@@ -5,45 +5,52 @@ export type Database = {
 		Tables: {
 			batting: {
 				Row: {
-					best: number;
+					balls: number;
 					date: string;
 					ducks: number;
 					fours: number;
 					id: number;
 					innings: number;
 					matches: number;
-					player_id: number;
+					player: string;
 					runs: number;
 					sixes: number;
 				};
 				Insert: {
-					best?: number;
+					balls: number;
 					date: string;
-					ducks?: number;
-					fours?: number;
+					ducks: number;
+					fours: number;
 					id?: number;
-					innings?: number;
-					matches?: number;
-					player_id: number;
-					runs?: number;
-					sixes?: number;
+					innings: number;
+					matches: number;
+					player?: string;
+					runs: number;
+					sixes: number;
 				};
 				Update: {
-					best?: number;
+					balls?: number;
 					date?: string;
 					ducks?: number;
 					fours?: number;
 					id?: number;
 					innings?: number;
 					matches?: number;
-					player_id?: number;
+					player?: string;
 					runs?: number;
 					sixes?: number;
 				};
 				Relationships: [
 					{
-						foreignKeyName: "batting_player_id_fkey";
-						columns: ["player_id"];
+						foreignKeyName: "batting_date_fkey";
+						columns: ["date"];
+						isOneToOne: false;
+						referencedRelation: "dates";
+						referencedColumns: ["date"];
+					},
+					{
+						foreignKeyName: "batting_player_fkey";
+						columns: ["player"];
 						isOneToOne: false;
 						referencedRelation: "players";
 						referencedColumns: ["id"];
@@ -58,7 +65,7 @@ export type Database = {
 					matches: number;
 					no_balls: number;
 					overs: number;
-					player_id: number;
+					player: string;
 					runs: number;
 					wickets: number;
 					wides: number;
@@ -70,7 +77,7 @@ export type Database = {
 					matches?: number;
 					no_balls?: number;
 					overs?: number;
-					player_id: number;
+					player?: string;
 					runs?: number;
 					wickets?: number;
 					wides?: number;
@@ -82,50 +89,82 @@ export type Database = {
 					matches?: number;
 					no_balls?: number;
 					overs?: number;
-					player_id?: number;
+					player?: string;
 					runs?: number;
 					wickets?: number;
 					wides?: number;
 				};
 				Relationships: [
 					{
-						foreignKeyName: "bowling_player_id_fkey";
-						columns: ["player_id"];
+						foreignKeyName: "bowling_date_fkey";
+						columns: ["date"];
+						isOneToOne: false;
+						referencedRelation: "dates";
+						referencedColumns: ["date"];
+					},
+					{
+						foreignKeyName: "bowling_player_fkey";
+						columns: ["player"];
 						isOneToOne: false;
 						referencedRelation: "players";
 						referencedColumns: ["id"];
 					}
 				];
 			};
+			dates: {
+				Row: {
+					date: string;
+					title: string | null;
+				};
+				Insert: {
+					date: string;
+					title?: string | null;
+				};
+				Update: {
+					date?: string;
+					title?: string | null;
+				};
+				Relationships: [];
+			};
 			fielding: {
 				Row: {
 					catches: number;
 					date: string;
 					id: number;
-					player_id: number;
+					matches: number;
+					player: string;
 					run_outs: number;
-					stumps: number;
+					stumpings: number;
 				};
 				Insert: {
 					catches?: number;
 					date: string;
 					id?: number;
-					player_id: number;
+					matches?: number;
+					player?: string;
 					run_outs?: number;
-					stumps?: number;
+					stumpings?: number;
 				};
 				Update: {
 					catches?: number;
 					date?: string;
 					id?: number;
-					player_id?: number;
+					matches?: number;
+					player?: string;
 					run_outs?: number;
-					stumps?: number;
+					stumpings?: number;
 				};
 				Relationships: [
 					{
-						foreignKeyName: "fielding_player_id_fkey";
-						columns: ["player_id"];
+						foreignKeyName: "fielding_date_fkey";
+						columns: ["date"];
+						isOneToOne: false;
+						referencedRelation: "dates";
+						referencedColumns: ["date"];
+					},
+					{
+						foreignKeyName: "fielding_player_fkey";
+						columns: ["player"];
 						isOneToOne: false;
 						referencedRelation: "players";
 						referencedColumns: ["id"];
@@ -134,18 +173,15 @@ export type Database = {
 			};
 			players: {
 				Row: {
-					avatar: string;
-					id: number;
+					id: string;
 					name: string;
 				};
 				Insert: {
-					avatar?: string;
-					id?: number;
+					id?: string;
 					name: string;
 				};
 				Update: {
-					avatar?: string;
-					id?: number;
+					id?: string;
 					name?: string;
 				};
 				Relationships: [];
