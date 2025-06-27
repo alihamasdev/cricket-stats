@@ -1,10 +1,36 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
+	graphql_public: {
+		Tables: {
+			[_ in never]: never;
+		};
+		Views: {
+			[_ in never]: never;
+		};
+		Functions: {
+			graphql: {
+				Args: {
+					operationName?: string;
+					query?: string;
+					variables?: Json;
+					extensions?: Json;
+				};
+				Returns: Json;
+			};
+		};
+		Enums: {
+			[_ in never]: never;
+		};
+		CompositeTypes: {
+			[_ in never]: never;
+		};
+	};
 	public: {
 		Tables: {
 			batting: {
 				Row: {
+					average: number;
 					balls: number;
 					date: string;
 					ducks: number;
@@ -15,20 +41,24 @@ export type Database = {
 					player: string;
 					runs: number;
 					sixes: number;
+					strike_rate: number;
 				};
 				Insert: {
-					balls: number;
+					average?: number;
+					balls?: number;
 					date: string;
-					ducks: number;
-					fours: number;
+					ducks?: number;
+					fours?: number;
 					id?: number;
-					innings: number;
-					matches: number;
-					player?: string;
-					runs: number;
-					sixes: number;
+					innings?: number;
+					matches?: number;
+					player: string;
+					runs?: number;
+					sixes?: number;
+					strike_rate?: number;
 				};
 				Update: {
+					average?: number;
 					balls?: number;
 					date?: string;
 					ducks?: number;
@@ -39,6 +69,7 @@ export type Database = {
 					player?: string;
 					runs?: number;
 					sixes?: number;
+					strike_rate?: number;
 				};
 				Relationships: [
 					{
@@ -53,7 +84,7 @@ export type Database = {
 						columns: ["player"];
 						isOneToOne: false;
 						referencedRelation: "players";
-						referencedColumns: ["id"];
+						referencedColumns: ["name"];
 					}
 				];
 			};
@@ -61,36 +92,42 @@ export type Database = {
 				Row: {
 					date: string;
 					dots: number;
+					economy: number;
 					id: number;
 					matches: number;
 					no_balls: number;
 					overs: number;
 					player: string;
 					runs: number;
+					strike_rate: number;
 					wickets: number;
 					wides: number;
 				};
 				Insert: {
 					date: string;
 					dots?: number;
+					economy?: number;
 					id?: number;
 					matches?: number;
 					no_balls?: number;
 					overs?: number;
-					player?: string;
+					player: string;
 					runs?: number;
+					strike_rate?: number;
 					wickets?: number;
 					wides?: number;
 				};
 				Update: {
 					date?: string;
 					dots?: number;
+					economy?: number;
 					id?: number;
 					matches?: number;
 					no_balls?: number;
 					overs?: number;
 					player?: string;
 					runs?: number;
+					strike_rate?: number;
 					wickets?: number;
 					wides?: number;
 				};
@@ -107,22 +144,22 @@ export type Database = {
 						columns: ["player"];
 						isOneToOne: false;
 						referencedRelation: "players";
-						referencedColumns: ["id"];
+						referencedColumns: ["name"];
 					}
 				];
 			};
 			dates: {
 				Row: {
 					date: string;
-					title: string | null;
+					title: string;
 				};
 				Insert: {
 					date: string;
-					title?: string | null;
+					title: string;
 				};
 				Update: {
 					date?: string;
-					title?: string | null;
+					title?: string;
 				};
 				Relationships: [];
 			};
@@ -141,7 +178,7 @@ export type Database = {
 					date: string;
 					id?: number;
 					matches?: number;
-					player?: string;
+					player: string;
 					run_outs?: number;
 					stumpings?: number;
 				};
@@ -167,21 +204,18 @@ export type Database = {
 						columns: ["player"];
 						isOneToOne: false;
 						referencedRelation: "players";
-						referencedColumns: ["id"];
+						referencedColumns: ["name"];
 					}
 				];
 			};
 			players: {
 				Row: {
-					id: string;
 					name: string;
 				};
 				Insert: {
-					id?: string;
 					name: string;
 				};
 				Update: {
-					id?: string;
 					name?: string;
 				};
 				Relationships: [];
@@ -298,6 +332,9 @@ export type CompositeTypes<
 		: never;
 
 export const Constants = {
+	graphql_public: {
+		Enums: {}
+	},
 	public: {
 		Enums: {}
 	}

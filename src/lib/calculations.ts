@@ -1,10 +1,6 @@
-import { type Tables } from "@/lib/supabase/database";
+import type { BattingStats, BowlingStats, FieldingStats } from "@/lib/types";
 
-type BattingStats = Omit<Tables<"batting">, "id" | "player" | "date">;
-export type FullBattingStats = BattingStats & { average: number; strike_rate: number };
-export type PlayerBattingStats = FullBattingStats & { name: string };
-
-export function calculateBattingStats(stats: BattingStats[]): FullBattingStats {
+export function calculateBattingStats(stats: BattingStats[]): Omit<BattingStats, "player" | "date" | "id"> {
 	const battingStats = stats.reduce(
 		(acc, stat) => ({
 			matches: acc.matches + stat.matches,
@@ -19,17 +15,17 @@ export function calculateBattingStats(stats: BattingStats[]): FullBattingStats {
 	);
 
 	const { innings, runs, balls } = battingStats;
-	const average = innings > 0 ? runs / innings : 0.0;
-	const strike_rate = runs > 0 ? (runs / balls) * 100 : 0.0;
+	const average = innings > 0 ? runs / innings : 0;
+	const strike_rate = runs > 0 ? (runs / balls) * 100 : 0;
 
-	return { average: Number(average.toFixed(2)), strike_rate: Number(strike_rate.toFixed(2)), ...battingStats };
+	return {
+		average: Number(average.toFixed(2)),
+		strike_rate: Number(strike_rate.toFixed(2)),
+		...battingStats
+	};
 }
 
-type BowlingStats = Omit<Tables<"bowling">, "id" | "player" | "date">;
-export type FullBowlingStats = BowlingStats & { economy: number; strike_rate: number };
-export type PlayerBowlingStats = FullBowlingStats & { name: string };
-
-export function calculateBowlingStats(stats: BowlingStats[]): FullBowlingStats {
+export function calculateBowlingStats(stats: BowlingStats[]): Omit<BowlingStats, "player" | "date" | "id"> {
 	const bowlingStats = stats.reduce(
 		(acc, stat) => ({
 			matches: acc.matches + stat.matches,
@@ -44,16 +40,13 @@ export function calculateBowlingStats(stats: BowlingStats[]): FullBowlingStats {
 	);
 
 	const { overs, runs } = bowlingStats;
-	const economy = overs > 0 ? runs / overs : 0.0;
-	const strike_rate = overs > 0 ? runs / (overs * 6) : 0.0;
+	const economy = overs > 0 ? runs / overs : 0;
+	const strike_rate = overs > 0 ? runs / (overs * 6) : 0;
 
 	return { economy: Number(economy.toFixed(2)), strike_rate: Number(strike_rate.toFixed(2)), ...bowlingStats };
 }
 
-export type FullFieldingStats = Omit<Tables<"fielding">, "id" | "player" | "date">;
-export type PlayerFieldingStats = FullFieldingStats & { name: string };
-
-export function calculateFieldingStats(stats: FullFieldingStats[]): FullFieldingStats {
+export function calculateFieldingStats(stats: FieldingStats[]): Omit<FieldingStats, "player" | "date" | "id"> {
 	return stats.reduce(
 		(acc, stat) => ({
 			matches: acc.matches + stat.matches,
@@ -63,4 +56,8 @@ export function calculateFieldingStats(stats: FullFieldingStats[]): FullFielding
 		}),
 		{ matches: 0, catches: 0, run_outs: 0, stumpings: 0 }
 	);
+}
+
+export function filterByDate<T>(data: Record<string, T>[], targetDate: string): T[] {
+	return data.filter((obj) => targetDate in obj).map((obj) => obj[targetDate]);
 }
