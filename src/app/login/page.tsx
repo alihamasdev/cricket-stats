@@ -3,8 +3,6 @@
 import { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { BeatLoader } from "react-spinners";
-import { toast } from "sonner";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -33,7 +31,7 @@ export default function LoginPage() {
 	function onSubmit(values: z.infer<typeof loginSchema>) {
 		startTransition(async () => {
 			const { error } = await loginAction(values);
-			toast.error(error);
+			form.setError("email", { message: error });
 		});
 	}
 
@@ -74,8 +72,8 @@ export default function LoginPage() {
 										</FormItem>
 									)}
 								/>
-								<Button type="submit" className="w-full" disabled={!form.formState.isValid || isPending}>
-									{!isPending ? <BeatLoader style={{ color: "--color-primary-foreground" }} size={8} /> : "Login"}
+								<Button type="submit" className="w-full" disabled={isPending}>
+									Login
 								</Button>
 							</form>
 						</Form>
