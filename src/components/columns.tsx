@@ -36,6 +36,10 @@ export const battingColumns: ColumnDef<BattingStats>[] = [
 		header: ({ column }) => <ColumnHeader column={column} title="Balls" />
 	},
 	{
+		accessorKey: "not_outs",
+		header: ({ column }) => <ColumnHeader column={column} title="Not Outs" />
+	},
+	{
 		accessorKey: "strike",
 		header: ({ column }) => <ColumnHeader column={column} title="Strike Rate" />,
 		cell: ({ row }) => {
@@ -68,10 +72,6 @@ export const battingColumns: ColumnDef<BattingStats>[] = [
 	{
 		accessorKey: "ducks",
 		header: ({ column }) => <ColumnHeader column={column} title="Ducks" />
-	},
-	{
-		accessorKey: "not_outs",
-		header: ({ column }) => <ColumnHeader column={column} title="Not Outs" />
 	}
 ];
 

@@ -37,7 +37,7 @@ export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 					<div className="flex w-full items-center justify-between gap-x-4 md:w-auto">
 						<DateFilter />
 						<StatsTypeFilter />
-						<Button asChild>
+						<Button className="hidden md:inline-flex" asChild>
 							<Link href="/add">
 								<Plus />
 								Add Stats
