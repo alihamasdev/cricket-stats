@@ -5,7 +5,7 @@ export function PlayerAvatarName({ name }: { name: string }) {
 
 	return (
 		<div className="flex items-center gap-x-2">
-			<Avatar>
+			<Avatar className="size-6 md:size-8">
 				<AvatarImage src={src} />
 				<AvatarFallback />
 			</Avatar>

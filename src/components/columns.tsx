@@ -2,7 +2,7 @@
 
 import type { Column, ColumnDef } from "@tanstack/react-table";
 
-import { type Tables } from "@/lib/supabase/database";
+import type { BattingStats, BowlingStats, FieldingStats } from "@/lib/types";
 import { PlayerAvatarName } from "@/components/player-avatar";
 
 function ColumnHeader<T>({ column, title }: { column: Column<T>; title: React.ReactNode }) {
@@ -13,7 +13,7 @@ function ColumnHeader<T>({ column, title }: { column: Column<T>; title: React.Re
 	);
 }
 
-export const battingColumns: ColumnDef<Tables<"batting">>[] = [
+export const battingColumns: ColumnDef<BattingStats>[] = [
 	{
 		accessorKey: "player",
 		header: ({ column }) => <ColumnHeader column={column} title="Name" />,
@@ -28,20 +28,34 @@ export const battingColumns: ColumnDef<Tables<"batting">>[] = [
 		header: ({ column }) => <ColumnHeader column={column} title="Innings" />
 	},
 	{
-		accessorKey: "balls",
-		header: ({ column }) => <ColumnHeader column={column} title="Balls" />
-	},
-	{
 		accessorKey: "runs",
 		header: ({ column }) => <ColumnHeader column={column} title="Runs" />
 	},
 	{
-		accessorKey: "average",
-		header: ({ column }) => <ColumnHeader column={column} title="Average" />
+		accessorKey: "balls",
+		header: ({ column }) => <ColumnHeader column={column} title="Balls" />
 	},
 	{
-		accessorKey: "strike_rate",
-		header: ({ column }) => <ColumnHeader column={column} title="Strike Rate" />
+		accessorKey: "strike",
+		header: ({ column }) => <ColumnHeader column={column} title="Strike Rate" />,
+		cell: ({ row }) => {
+			const runs = row.original.runs;
+			const balls = row.original.balls;
+			const strikeRate = balls > 0 ? (runs / balls) * 100 : 0;
+			return <span>{strikeRate.toFixed(2)}</span>;
+		}
+	},
+	{
+		accessorKey: "average",
+		header: ({ column }) => <ColumnHeader column={column} title="Average" />,
+		cell: ({ row }) => {
+			const runs = row.original.runs;
+			const innings = row.original.innings;
+			const notOuts = row.original.not_outs;
+			const calcInnings = innings > 0 ? innings - notOuts : 0;
+			const average = innings > 0 ? runs / (calcInnings > 0 ? calcInnings : 1) : 0;
+			return <span>{average.toFixed(2)}</span>;
+		}
 	},
 	{
 		accessorKey: "fours",
@@ -54,10 +68,14 @@ export const battingColumns: ColumnDef<Tables<"batting">>[] = [
 	{
 		accessorKey: "ducks",
 		header: ({ column }) => <ColumnHeader column={column} title="Ducks" />
+	},
+	{
+		accessorKey: "not_outs",
+		header: ({ column }) => <ColumnHeader column={column} title="Not Outs" />
 	}
 ];
 
-export const bowlingColumns: ColumnDef<Tables<"batting">>[] = [
+export const bowlingColumns: ColumnDef<BowlingStats>[] = [
 	{
 		accessorKey: "player",
 		header: ({ column }) => <ColumnHeader column={column} title="Name" />,
@@ -66,6 +84,10 @@ export const bowlingColumns: ColumnDef<Tables<"batting">>[] = [
 	{
 		accessorKey: "matches",
 		header: ({ column }) => <ColumnHeader column={column} title="Matches" />
+	},
+	{
+		accessorKey: "innings",
+		header: ({ column }) => <ColumnHeader column={column} title="Innings" />
 	},
 	{
 		accessorKey: "overs",
@@ -78,14 +100,6 @@ export const bowlingColumns: ColumnDef<Tables<"batting">>[] = [
 	{
 		accessorKey: "wickets",
 		header: ({ column }) => <ColumnHeader column={column} title="Wickets" />
-	},
-	{
-		accessorKey: "economy",
-		header: ({ column }) => <ColumnHeader column={column} title="Economy" />
-	},
-	{
-		accessorKey: "strike_rate",
-		header: ({ column }) => <ColumnHeader column={column} title="Strike Rate" />
 	},
 	{
 		accessorKey: "dots",
@@ -101,7 +115,7 @@ export const bowlingColumns: ColumnDef<Tables<"batting">>[] = [
 	}
 ];
 
-export const fieldingColumns: ColumnDef<Tables<"batting">>[] = [
+export const fieldingColumns: ColumnDef<FieldingStats>[] = [
 	{
 		accessorKey: "player",
 		header: ({ column }) => <ColumnHeader column={column} title="Name" />,

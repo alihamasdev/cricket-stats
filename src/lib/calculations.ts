@@ -1,7 +1,7 @@
 import type { BattingStats, BowlingStats, FieldingStats } from "@/lib/types";
 
 export function calculateBattingStats(stats: BattingStats[]): Omit<BattingStats, "player" | "date" | "id"> {
-	const battingStats = stats.reduce(
+	return stats.reduce(
 		(acc, stat) => ({
 			matches: acc.matches + stat.matches,
 			innings: acc.innings + stat.innings,
@@ -9,26 +9,18 @@ export function calculateBattingStats(stats: BattingStats[]): Omit<BattingStats,
 			runs: acc.runs + stat.runs,
 			sixes: acc.sixes + stat.sixes,
 			fours: acc.fours + stat.fours,
-			ducks: acc.ducks + stat.ducks
+			ducks: acc.ducks + stat.ducks,
+			not_outs: acc.not_outs + stat.not_outs
 		}),
-		{ matches: 0, innings: 0, balls: 0, runs: 0, sixes: 0, fours: 0, ducks: 0 }
+		{ matches: 0, innings: 0, balls: 0, runs: 0, sixes: 0, fours: 0, ducks: 0, not_outs: 0 }
 	);
-
-	const { innings, runs, balls } = battingStats;
-	const average = innings > 0 ? runs / innings : 0;
-	const strike_rate = runs > 0 ? (runs / balls) * 100 : 0;
-
-	return {
-		average: Number(average.toFixed(2)),
-		strike_rate: Number(strike_rate.toFixed(2)),
-		...battingStats
-	};
 }
 
 export function calculateBowlingStats(stats: BowlingStats[]): Omit<BowlingStats, "player" | "date" | "id"> {
-	const bowlingStats = stats.reduce(
+	return stats.reduce(
 		(acc, stat) => ({
 			matches: acc.matches + stat.matches,
+			innings: acc.innings + stat.innings,
 			overs: acc.overs + stat.overs,
 			wickets: acc.wickets + stat.wickets,
 			runs: acc.runs + stat.runs,
@@ -36,14 +28,8 @@ export function calculateBowlingStats(stats: BowlingStats[]): Omit<BowlingStats,
 			wides: acc.wides + stat.wides,
 			no_balls: acc.no_balls + stat.no_balls
 		}),
-		{ matches: 0, overs: 0, wickets: 0, runs: 0, dots: 0, wides: 0, no_balls: 0 }
+		{ matches: 0, innings: 0, overs: 0, wickets: 0, runs: 0, dots: 0, wides: 0, no_balls: 0 }
 	);
-
-	const { overs, runs } = bowlingStats;
-	const economy = overs > 0 ? runs / overs : 0;
-	const strike_rate = overs > 0 ? runs / (overs * 6) : 0;
-
-	return { economy: Number(economy.toFixed(2)), strike_rate: Number(strike_rate.toFixed(2)), ...bowlingStats };
 }
 
 export function calculateFieldingStats(stats: FieldingStats[]): Omit<FieldingStats, "player" | "date" | "id"> {

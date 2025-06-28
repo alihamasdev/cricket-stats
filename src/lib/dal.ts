@@ -27,7 +27,6 @@ export async function getStats(): Promise<StatsData> {
 		fielding: { ...calculateFieldingStats(fielding), player: name, date: "", id: 1 }
 	})) satisfies AllTimeStats[];
 
-	// const a = data.map(({ batting }) => Object.groupBy(batting, ({ date }) => date));
 	const batting = data.map(({ batting }) =>
 		batting.reduce((acc: Record<string, BattingStats>, stat) => {
 			acc[stat.date] = stat;

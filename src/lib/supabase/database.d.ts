@@ -30,7 +30,6 @@ export type Database = {
 		Tables: {
 			batting: {
 				Row: {
-					average: number;
 					balls: number;
 					date: string;
 					ducks: number;
@@ -38,27 +37,25 @@ export type Database = {
 					id: number;
 					innings: number;
 					matches: number;
+					not_outs: number;
 					player: string;
 					runs: number;
 					sixes: number;
-					strike_rate: number;
 				};
 				Insert: {
-					average?: number;
-					balls?: number;
+					balls: number;
 					date: string;
-					ducks?: number;
-					fours?: number;
+					ducks: number;
+					fours: number;
 					id?: number;
-					innings?: number;
-					matches?: number;
+					innings: number;
+					matches: number;
+					not_outs: number;
 					player: string;
-					runs?: number;
-					sixes?: number;
-					strike_rate?: number;
+					runs: number;
+					sixes: number;
 				};
 				Update: {
-					average?: number;
 					balls?: number;
 					date?: string;
 					ducks?: number;
@@ -66,10 +63,10 @@ export type Database = {
 					id?: number;
 					innings?: number;
 					matches?: number;
+					not_outs?: number;
 					player?: string;
 					runs?: number;
 					sixes?: number;
-					strike_rate?: number;
 				};
 				Relationships: [
 					{
@@ -92,42 +89,39 @@ export type Database = {
 				Row: {
 					date: string;
 					dots: number;
-					economy: number;
 					id: number;
+					innings: number;
 					matches: number;
 					no_balls: number;
 					overs: number;
 					player: string;
 					runs: number;
-					strike_rate: number;
 					wickets: number;
 					wides: number;
 				};
 				Insert: {
 					date: string;
-					dots?: number;
-					economy?: number;
+					dots: number;
 					id?: number;
-					matches?: number;
-					no_balls?: number;
-					overs?: number;
+					innings: number;
+					matches: number;
+					no_balls: number;
+					overs: number;
 					player: string;
-					runs?: number;
-					strike_rate?: number;
-					wickets?: number;
-					wides?: number;
+					runs: number;
+					wickets: number;
+					wides: number;
 				};
 				Update: {
 					date?: string;
 					dots?: number;
-					economy?: number;
 					id?: number;
+					innings?: number;
 					matches?: number;
 					no_balls?: number;
 					overs?: number;
 					player?: string;
 					runs?: number;
-					strike_rate?: number;
 					wickets?: number;
 					wides?: number;
 				};
@@ -174,13 +168,13 @@ export type Database = {
 					stumpings: number;
 				};
 				Insert: {
-					catches?: number;
+					catches: number;
 					date: string;
 					id?: number;
-					matches?: number;
+					matches: number;
 					player: string;
-					run_outs?: number;
-					stumpings?: number;
+					run_outs: number;
+					stumpings: number;
 				};
 				Update: {
 					catches?: number;

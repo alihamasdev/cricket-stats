@@ -8,6 +8,7 @@ import { Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
+import { Input } from "@/components/ui/input";
 import { DateFilter } from "@/components/date-filter";
 import { StatsTypeFilter } from "@/components/stats-type-filter";
 
@@ -24,17 +25,25 @@ export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 
 	return (
 		<Fragment>
-			<header className="grid w-full grid-rows-2 gap-4 pb-5 md:grid-cols-2 md:grid-rows-1">
+			<header className="flex w-full flex-col items-center justify-between gap-y-4 pb-5 md:flex-row md:gap-x-4">
 				<h1 className="text-center text-2xl/9 font-semibold capitalize md:text-left">{statsTypeParam} Stats</h1>
-				<div className="flex items-center justify-center gap-x-4 md:justify-end">
-					<DateFilter />
-					<StatsTypeFilter />
-					<Button asChild>
-						<Link href="/add">
-							<Plus />
-							Add Stats
-						</Link>
-					</Button>
+				<div className="flex w-full flex-col gap-4 md:w-auto md:flex-row">
+					<Input
+						placeholder="Search players"
+						className="lg:min-w-md"
+						value={(table.getColumn("player")?.getFilterValue() as string) ?? ""}
+						onChange={(event) => table.getColumn("player")?.setFilterValue(event.target.value)}
+					/>
+					<div className="flex w-full items-center justify-between gap-x-4 md:w-auto">
+						<DateFilter />
+						<StatsTypeFilter />
+						<Button asChild>
+							<Link href="/add">
+								<Plus />
+								Add Stats
+							</Link>
+						</Button>
+					</div>
 				</div>
 			</header>
 			<DataTable table={table} />
