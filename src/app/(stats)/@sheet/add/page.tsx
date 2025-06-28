@@ -356,7 +356,7 @@ export default function AddStatsPage() {
 				</Tabs>
 
 				{form.formState.errors.root && (
-					<p className="text-center col-span-2 text-destructive font-medium">{form.formState.errors.root.message}</p>
+					<p className="text-destructive col-span-2 text-center font-medium">{form.formState.errors.root.message}</p>
 				)}
 
 				<Button type="submit" className="col-span-2 w-fit" disabled={isPending}>

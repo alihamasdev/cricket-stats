@@ -45,7 +45,7 @@ export function StatsProvider({ statsData, datesData, ...props }: React.PropsWit
 			setBowlingStats(() => allTimeStats.map(({ bowling }) => bowling));
 			setFieldingStats(() => allTimeStats.map(({ fielding }) => fielding));
 		}
-	}, [statsDate]);
+	}, [allTimeStats, batting, bowling, fielding, statsDate]);
 
 	return (
 		<StatsContext
