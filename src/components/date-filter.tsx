@@ -21,7 +21,7 @@ export function DateFilter() {
 			<DropdownMenuTrigger asChild>
 				<Button variant="outline">
 					<Calendar />
-					{statsDate ? format(statsDate, "MMM d, yyyy") : "All Time"}
+					{statsDate ? format(statsDate, "PP") : "All Time"}
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent>
@@ -30,7 +30,7 @@ export function DateFilter() {
 					{dates.map(({ date, title }) => (
 						<DropdownMenuRadioItem key={date} value={date} className="justify-between">
 							<span className="font-medium">{title}</span>
-							<span className="text-muted-foreground">({format(date, "MMM d, yyyy")})</span>
+							<span className="text-muted-foreground">({format(date, "PP")})</span>
 						</DropdownMenuRadioItem>
 					))}
 				</DropdownMenuRadioGroup>

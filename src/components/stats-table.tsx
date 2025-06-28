@@ -7,9 +7,9 @@ import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable 
 import { Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { DataTable } from "@/components/ui/data-table";
 import { DateFilter } from "@/components/date-filter";
 import { StatsTypeFilter } from "@/components/stats-type-filter";
-import { DataTable } from "@/components/table/data-table";
 
 export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 	const table = useReactTable({

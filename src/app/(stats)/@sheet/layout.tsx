@@ -11,7 +11,7 @@ export default function SheetLayout({ children }: { children: React.ReactNode })
 
 	return (
 		<Sheet open={true} onOpenChange={() => router.back()}>
-			<SheetContent>
+			<SheetContent className="overflow-y-auto">
 				<SheetHeader className="flex-row justify-between">
 					<SheetTitle className="text-2xl">Add Stats</SheetTitle>
 					<SheetDescription />
