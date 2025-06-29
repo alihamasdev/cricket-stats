@@ -4,10 +4,16 @@ import { Fragment } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
-import { Plus } from "lucide-react";
+import { Plus, Settings2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
+import {
+	DropdownMenu,
+	DropdownMenuCheckboxItem,
+	DropdownMenuContent,
+	DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { DateFilter } from "@/components/date-filter";
 import { StatsTypeFilter } from "@/components/stats-type-filter";
@@ -37,6 +43,31 @@ export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 					<div className="flex w-full items-center justify-between gap-x-4 md:w-auto">
 						<DateFilter />
 						<StatsTypeFilter />
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<Button variant="outline">
+									<Settings2 />
+									Columns
+								</Button>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent align="end">
+								{table
+									.getAllColumns()
+									.filter((column) => column.getCanHide())
+									.map((column) => {
+										return (
+											<DropdownMenuCheckboxItem
+												key={column.id}
+												className="capitalize"
+												checked={column.getIsVisible()}
+												onCheckedChange={(value) => column.toggleVisibility(!!value)}
+											>
+												{column.id.split("_").join(" ")}
+											</DropdownMenuCheckboxItem>
+										);
+									})}
+							</DropdownMenuContent>
+						</DropdownMenu>
 						<Button className="hidden md:inline-flex" asChild>
 							<Link href="/add">
 								<Plus />
