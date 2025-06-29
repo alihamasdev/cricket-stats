@@ -57,7 +57,7 @@ export type DatesData = Awaited<ReturnType<typeof getDates>>;
 
 export async function getDates() {
 	const supabase = await createClient();
-	const { data, error } = await supabase.from("dates").select("*");
+	const { data, error } = await supabase.from("dates").select("*").order("date", { ascending: false });
 
 	if (error) {
 		console.log({ dateError: error });

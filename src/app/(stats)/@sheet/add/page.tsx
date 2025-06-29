@@ -33,7 +33,7 @@ export default function AddStatsPage() {
 			batting: { innings: "", runs: "", balls: "", fours: "", sixes: "", ducks: "", not_outs: "" },
 			bowling: { innings: "", dots: "", no_balls: "", overs: "", runs: "", wickets: "", wides: "" },
 			fielding: { catches: "0", run_outs: "0", stumpings: "0" },
-			date: dates[dates.length - 1].date
+			date: dates[0].date
 		}
 	});
 
