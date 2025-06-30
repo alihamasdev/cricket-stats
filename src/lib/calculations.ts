@@ -17,7 +17,7 @@ export function calculateBattingStats(stats: BattingStats[]): Omit<BattingStats,
 }
 
 export function calculateBowlingStats(stats: BowlingStats[]): Omit<BowlingStats, "player" | "date" | "id"> {
-	return stats.reduce(
+	const bowling = stats.reduce(
 		(acc, stat) => ({
 			matches: acc.matches + stat.matches,
 			innings: acc.innings + stat.innings,
@@ -30,6 +30,17 @@ export function calculateBowlingStats(stats: BowlingStats[]): Omit<BowlingStats,
 		}),
 		{ matches: 0, innings: 0, overs: 0, wickets: 0, runs: 0, dots: 0, wides: 0, no_balls: 0 }
 	);
+
+	const oversString = bowling.overs.toString().split(".");
+	const completedOvers = Number(oversString[0]);
+	const extraBalls = Number(oversString[1]);
+
+	if (extraBalls >= 6) {
+		const remExtraBalls = (extraBalls - 6) * 0.1;
+		return { ...bowling, overs: completedOvers + 1 + remExtraBalls };
+	}
+
+	return bowling;
 }
 
 export function calculateFieldingStats(stats: FieldingStats[]): Omit<FieldingStats, "player" | "date" | "id"> {
