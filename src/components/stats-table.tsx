@@ -31,7 +31,7 @@ export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 
 	return (
 		<Fragment>
-			<header className="flex w-full flex-col items-center justify-between gap-y-4 pb-5 md:flex-row md:gap-x-4">
+			<header className="flex w-full flex-col items-center justify-between gap-y-4 pb-6 md:flex-row md:gap-x-4">
 				<h1 className="text-center text-2xl/9 font-semibold capitalize md:text-left">{statsTypeParam} Stats</h1>
 				<div className="flex w-full flex-col gap-4 md:w-auto md:flex-row">
 					<Input
