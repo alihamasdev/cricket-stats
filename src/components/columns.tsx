@@ -21,11 +21,11 @@ export const battingColumns: ColumnDef<BattingStats>[] = [
 	},
 	{
 		accessorKey: "matches",
-		header: ({ column }) => <ColumnHeader column={column} title="Matches" />
+		header: ({ column }) => <ColumnHeader column={column} title="Mat" />
 	},
 	{
 		accessorKey: "innings",
-		header: ({ column }) => <ColumnHeader column={column} title="Innings" />
+		header: ({ column }) => <ColumnHeader column={column} title="Inns" />
 	},
 	{
 		accessorKey: "runs",
@@ -37,41 +37,41 @@ export const battingColumns: ColumnDef<BattingStats>[] = [
 	},
 	{
 		accessorKey: "not_outs",
-		header: ({ column }) => <ColumnHeader column={column} title="Not Outs" />
+		header: ({ column }) => <ColumnHeader column={column} title="NO" />
 	},
 	{
 		accessorKey: "strike",
-		header: ({ column }) => <ColumnHeader column={column} title="Strike Rate" />,
+		header: ({ column }) => <ColumnHeader column={column} title="SR" />,
 		cell: ({ row }) => {
 			const runs = row.original.runs;
 			const balls = row.original.balls;
 			const strikeRate = balls > 0 ? (runs / balls) * 100 : 0;
-			return <span>{strikeRate.toFixed(2)}</span>;
+			return Math.round(strikeRate);
 		}
 	},
 	{
 		accessorKey: "average",
-		header: ({ column }) => <ColumnHeader column={column} title="Average" />,
+		header: ({ column }) => <ColumnHeader column={column} title="Avg" />,
 		cell: ({ row }) => {
 			const runs = row.original.runs;
 			const innings = row.original.innings;
 			const notOuts = row.original.not_outs;
 			const calcInnings = innings > 0 ? innings - notOuts : 0;
 			const average = innings > 0 ? runs / (calcInnings > 0 ? calcInnings : 1) : 0;
-			return <span>{average.toFixed(2)}</span>;
+			return Math.round(average);
 		}
 	},
 	{
 		accessorKey: "fours",
-		header: ({ column }) => <ColumnHeader column={column} title="Fours" />
+		header: ({ column }) => <ColumnHeader column={column} title="4s" />
 	},
 	{
 		accessorKey: "sixes",
-		header: ({ column }) => <ColumnHeader column={column} title="Sixes" />
+		header: ({ column }) => <ColumnHeader column={column} title="6s" />
 	},
 	{
 		accessorKey: "ducks",
-		header: ({ column }) => <ColumnHeader column={column} title="Ducks" />
+		header: ({ column }) => <ColumnHeader column={column} title="0s" />
 	}
 ];
 
@@ -83,11 +83,11 @@ export const bowlingColumns: ColumnDef<BowlingStats>[] = [
 	},
 	{
 		accessorKey: "matches",
-		header: ({ column }) => <ColumnHeader column={column} title="Matches" />
+		header: ({ column }) => <ColumnHeader column={column} title="Mat" />
 	},
 	{
 		accessorKey: "innings",
-		header: ({ column }) => <ColumnHeader column={column} title="Innings" />
+		header: ({ column }) => <ColumnHeader column={column} title="Inns" />
 	},
 	{
 		accessorKey: "overs",
@@ -99,7 +99,7 @@ export const bowlingColumns: ColumnDef<BowlingStats>[] = [
 	},
 	{
 		accessorKey: "wickets",
-		header: ({ column }) => <ColumnHeader column={column} title="Wickets" />
+		header: ({ column }) => <ColumnHeader column={column} title="Wkts" />
 	},
 	{
 		accessorKey: "dots",
@@ -111,7 +111,7 @@ export const bowlingColumns: ColumnDef<BowlingStats>[] = [
 	},
 	{
 		accessorKey: "no_balls",
-		header: ({ column }) => <ColumnHeader column={column} title="No Balls" />
+		header: ({ column }) => <ColumnHeader column={column} title="NB" />
 	}
 ];
 

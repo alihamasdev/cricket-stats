@@ -2,11 +2,16 @@
 
 import { flexRender, type Table as TanstackTable } from "@tanstack/react-table";
 
+import { cn } from "@/lib/utils";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-export function DataTable<T>({ table }: { table: TanstackTable<T> }) {
+export function DataTable<T>({
+	table,
+	className,
+	...props
+}: React.ComponentProps<"div"> & { table: TanstackTable<T> }) {
 	return (
-		<div className="overflow-hidden rounded-lg border">
+		<div className={cn("overflow-hidden rounded-lg border", className)} {...props}>
 			<Table>
 				<TableHeader>
 					{table.getHeaderGroups().map((headerGroup) => (
