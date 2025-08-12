@@ -1,5 +1,3 @@
-"use server";
-
 import { calculateBattingStats, calculateBowlingStats, calculateFieldingStats } from "@/lib/calculations";
 import { createClient } from "@/lib/supabase/server";
 import type { AllTimeStats, BattingStats, BowlingStats, FieldingStats } from "@/lib/types";
@@ -21,18 +19,18 @@ export async function getStats(): Promise<StatsData> {
 		throw new Error(error.message);
 	}
 
-	const allTimeStats = data.map(({ name, batting, bowling, fielding }) => ({
-		batting: { ...calculateBattingStats(batting), player: name, date: "", id: 1 },
-		bowling: { ...calculateBowlingStats(bowling), player: name, date: "", id: 1 },
-		fielding: { ...calculateFieldingStats(fielding), player: name, date: "", id: 1 }
+	const allTimeStats = data.map(({ batting, bowling, fielding, name: player }) => ({
+		batting: calculateBattingStats(batting, player),
+		bowling: calculateBowlingStats(bowling, player),
+		fielding: calculateFieldingStats(fielding, player)
 	})) satisfies AllTimeStats[];
 
-	const batting = data.map(({ batting }) =>
-		batting.reduce((acc: Record<string, BattingStats>, stat) => {
+	const batting = data.map(({ batting }) => {
+		return batting.reduce((acc: Record<string, BattingStats>, stat) => {
 			acc[stat.date] = stat;
 			return acc;
-		}, {})
-	);
+		}, {});
+	});
 
 	const bowling = data.map(({ bowling }) =>
 		bowling.reduce((acc: Record<string, BowlingStats>, stat) => {

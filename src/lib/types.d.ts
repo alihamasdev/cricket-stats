@@ -5,7 +5,7 @@ export type BowlingStats = Tables<"bowling">;
 export type FieldingStats = Tables<"fielding">;
 
 export interface AllTimeStats {
-	batting: BattingStats;
+	batting: ExtendedBattingStats;
 	bowling: BowlingStats;
 	fielding: FieldingStats;
 }

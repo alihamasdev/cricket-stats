@@ -1,7 +1,7 @@
 import type { BattingStats, BowlingStats, FieldingStats } from "@/lib/types";
 
-export function calculateBattingStats(stats: BattingStats[]): Omit<BattingStats, "player" | "date" | "id"> {
-	return stats.reduce(
+export function calculateBattingStats(stats: BattingStats[], player: string): BattingStats {
+	const batting = stats.reduce(
 		(acc, stat) => ({
 			matches: acc.matches + stat.matches,
 			innings: acc.innings + stat.innings,
@@ -14,9 +14,15 @@ export function calculateBattingStats(stats: BattingStats[]): Omit<BattingStats,
 		}),
 		{ matches: 0, innings: 0, balls: 0, runs: 0, sixes: 0, fours: 0, ducks: 0, not_outs: 0 }
 	);
+
+	const strikeRate = batting.balls > 0 ? (batting.runs / batting.balls) * 100 : 0;
+	const calcInnings = batting.innings > 0 ? batting.innings - batting.not_outs : 0;
+	const average = batting.innings > 0 ? batting.runs / (calcInnings > 0 ? calcInnings : 1) : 0;
+
+	return { ...batting, strike_rate: Math.round(strikeRate), average: Math.round(average), date: "", id: 1, player };
 }
 
-export function calculateBowlingStats(stats: BowlingStats[]): Omit<BowlingStats, "player" | "date" | "id"> {
+export function calculateBowlingStats(stats: BowlingStats[], player: string): BowlingStats {
 	const bowling = stats.reduce(
 		(acc, stat) => ({
 			matches: acc.matches + stat.matches,
@@ -37,14 +43,14 @@ export function calculateBowlingStats(stats: BowlingStats[]): Omit<BowlingStats,
 
 	if (extraBalls >= 6) {
 		const remExtraBalls = (extraBalls - 6) * 0.1;
-		return { ...bowling, overs: completedOvers + 1 + remExtraBalls };
+		return { ...bowling, overs: completedOvers + 1 + remExtraBalls, date: "", id: 1, player };
 	}
 
-	return bowling;
+	return { ...bowling, date: "", id: 1, player };
 }
 
-export function calculateFieldingStats(stats: FieldingStats[]): Omit<FieldingStats, "player" | "date" | "id"> {
-	return stats.reduce(
+export function calculateFieldingStats(stats: FieldingStats[], player: string): FieldingStats {
+	const fielding = stats.reduce(
 		(acc, stat) => ({
 			matches: acc.matches + stat.matches,
 			catches: acc.catches + stat.catches,
@@ -53,6 +59,8 @@ export function calculateFieldingStats(stats: FieldingStats[]): Omit<FieldingSta
 		}),
 		{ matches: 0, catches: 0, run_outs: 0, stumpings: 0 }
 	);
+
+	return { ...fielding, date: "", id: 1, player };
 }
 
 export function filterByDate<T>(data: Record<string, T>[], targetDate: string): T[] {

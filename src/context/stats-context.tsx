@@ -24,7 +24,7 @@ interface StatsProviderProps {
 	datesData: Promise<DatesData>;
 }
 
-export function StatsProvider({ statsData, datesData, ...props }: React.PropsWithChildren<StatsProviderProps>) {
+export function StatsProvider({ statsData, datesData, children }: React.PropsWithChildren<StatsProviderProps>) {
 	const dates = use(datesData);
 	const { players, allTimeStats, batting, bowling, fielding } = use(statsData);
 
@@ -48,10 +48,9 @@ export function StatsProvider({ statsData, datesData, ...props }: React.PropsWit
 	}, [allTimeStats, batting, bowling, fielding, statsDate]);
 
 	return (
-		<StatsContext
-			value={{ players, battingStats, bowlingStats, fieldingStats, dates, statsDate, setStatsDate }}
-			{...props}
-		/>
+		<StatsContext value={{ players, battingStats, bowlingStats, fieldingStats, dates, statsDate, setStatsDate }}>
+			{children}
+		</StatsContext>
 	);
 }
 

@@ -40,26 +40,12 @@ export const battingColumns: ColumnDef<BattingStats>[] = [
 		header: ({ column }) => <ColumnHeader column={column} title="NO" />
 	},
 	{
-		accessorKey: "strike",
-		header: ({ column }) => <ColumnHeader column={column} title="SR" />,
-		cell: ({ row }) => {
-			const runs = row.original.runs;
-			const balls = row.original.balls;
-			const strikeRate = balls > 0 ? (runs / balls) * 100 : 0;
-			return Math.round(strikeRate);
-		}
+		accessorKey: "strike_rate",
+		header: ({ column }) => <ColumnHeader column={column} title="SR" />
 	},
 	{
 		accessorKey: "average",
-		header: ({ column }) => <ColumnHeader column={column} title="Avg" />,
-		cell: ({ row }) => {
-			const runs = row.original.runs;
-			const innings = row.original.innings;
-			const notOuts = row.original.not_outs;
-			const calcInnings = innings > 0 ? innings - notOuts : 0;
-			const average = innings > 0 ? runs / (calcInnings > 0 ? calcInnings : 1) : 0;
-			return Math.round(average);
-		}
+		header: ({ column }) => <ColumnHeader column={column} title="Avg" />
 	},
 	{
 		accessorKey: "fours",
