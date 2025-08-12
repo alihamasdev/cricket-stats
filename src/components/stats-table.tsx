@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
@@ -15,6 +15,7 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 import { DateFilter } from "@/components/date-filter";
 import { StatsTypeFilter } from "@/components/stats-type-filter";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 	const table = useReactTable({
 		data,
@@ -24,12 +25,21 @@ export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 		getFilteredRowModel: getFilteredRowModel()
 	});
 
-	const statsType = useSearchParams().get("type") || "batting";
+	const [show, setShow] = useState(false);
+
+	const searchParams = useSearchParams();
+
+	const statsType = searchParams.get("type") ? `${searchParams.get("type")} stats` : "batting stats";
 
 	return (
 		<Fragment>
 			<header className="flex w-full flex-col items-center justify-between gap-y-4 pb-6 md:flex-row md:gap-x-4">
-				<h1 className="text-center text-2xl/9 font-bold capitalize md:text-left">{statsType} Stats</h1>
+				<h1
+					className="text-center text-2xl/9 font-bold capitalize md:text-left"
+					onDoubleClick={() => setShow((prev) => !prev)}
+				>
+					{statsType}
+				</h1>
 				<div className="flex w-full flex-col gap-4 md:w-auto md:flex-row">
 					<Input
 						placeholder="Search players"
@@ -50,12 +60,18 @@ export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 				</div>
 			</header>
 			<ResizablePanelGroup direction="horizontal">
-				<ResizablePanel defaultSize={100} minSize={50}>
+				<ResizablePanel defaultSize={100} minSize={50} className={show ? "space-y-2 p-2" : ""}>
+					{show && (
+						<div className="flex items-center justify-between">
+							<h1 className="text-left text-2xl/9 font-bold capitalize">{statsType}</h1>
+							<DateFilter />
+						</div>
+					)}
 					<DataTable table={table} />
 				</ResizablePanel>
 				<ResizableHandle />
-				<ResizablePanel>
-					<div className="flex w-50 flex-col gap-y-3 rounded-xl border p-4 pt-2">
+				<ResizablePanel defaultSize={0}>
+					<div className="flex w-50 flex-col gap-y-3 rounded-xl border p-4 pt-2" hidden={show}>
 						<h2 className="text-xl font-semibold">Columns</h2>
 						{table
 							.getAllColumns()

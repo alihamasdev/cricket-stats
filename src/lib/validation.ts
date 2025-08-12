@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const statsFormValue = z
-	.string({ required_error: "Field is required" })
+	.string()
 	.trim()
 	.refine((val) => Boolean(val.length), { message: "Field is required" });
 
