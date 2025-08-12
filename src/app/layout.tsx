@@ -12,8 +12,7 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-	title: "Cricket Stats",
-	description: "Gully cricket stats"
+	title: "Cricket Stats | Ali Hamas"
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
