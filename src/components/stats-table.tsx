@@ -63,8 +63,8 @@ export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 				<ResizablePanel defaultSize={100} minSize={50} className={show ? "space-y-2 p-2" : ""}>
 					{show && (
 						<div className="flex items-center justify-between">
-							<h1 className="text-left text-2xl/9 font-bold capitalize">{statsType}</h1>
-							<DateFilter />
+							<h1 className="text-left text-xl/8 font-bold capitalize">{statsType}</h1>
+							<DateFilter size="sm" />
 						</div>
 					)}
 					<DataTable table={table} />

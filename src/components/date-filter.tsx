@@ -13,13 +13,13 @@ import {
 	DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 
-export function DateFilter() {
+export function DateFilter({ variant = "outline", ...props }: React.ComponentProps<typeof Button>) {
 	const { dates, statsDate, setStatsDate } = useStats();
 
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button variant="outline">
+				<Button variant={variant} {...props}>
 					<Calendar />
 					{statsDate ? format(statsDate, "PP") : "All Time"}
 				</Button>
