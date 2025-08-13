@@ -12,15 +12,14 @@ export default function SheetLayout({ children }: { children: React.ReactNode })
 	return (
 		<Sheet open={true} onOpenChange={() => router.back()}>
 			<SheetContent className="overflow-y-auto">
-				<SheetHeader className="flex-row justify-between">
-					<SheetTitle className="text-2xl">Add Stats</SheetTitle>
-					<SheetDescription />
-					<SheetClose asChild>
-						<Button variant="outline" size="icon" className="size-8">
-							<X />
-						</Button>
-					</SheetClose>
-				</SheetHeader>
+				<SheetTitle hidden />
+				<SheetDescription hidden />
+				<SheetClose asChild>
+					<Button variant="outline" size="icon" className="absolute top-4 right-4 size-8">
+						<X />
+					</Button>
+				</SheetClose>
+
 				{children}
 			</SheetContent>
 		</Sheet>

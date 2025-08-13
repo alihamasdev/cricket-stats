@@ -31,7 +31,7 @@ export default function AddStatsPage() {
 			name: "",
 			matches: "",
 			batting: { innings: "", runs: "", balls: "", fours: "", sixes: "", ducks: "", not_outs: "" },
-			bowling: { innings: "", dots: "", no_balls: "", overs: "", runs: "", wickets: "", wides: "" },
+			bowling: { innings: "", dots: "", no_balls: "0", overs: "", runs: "", wickets: "", wides: "" },
 			fielding: { catches: "0", run_outs: "0", stumpings: "0" },
 			date: dates[0].date
 		}
@@ -55,6 +55,20 @@ export default function AddStatsPage() {
 				<PlayerNameField form={form} />
 
 				<FormField
+					name="matches"
+					control={form.control}
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Matches</FormLabel>
+							<FormControl>
+								<Input type="number" disabled={isPending} {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
+				<FormField
 					name="date"
 					control={form.control}
 					render={({ field }) => (
@@ -75,20 +89,6 @@ export default function AddStatsPage() {
 									))}
 								</SelectContent>
 							</Select>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-
-				<FormField
-					name="matches"
-					control={form.control}
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Matches</FormLabel>
-							<FormControl>
-								<Input type="number" disabled={isPending} {...field} />
-							</FormControl>
 							<FormMessage />
 						</FormItem>
 					)}

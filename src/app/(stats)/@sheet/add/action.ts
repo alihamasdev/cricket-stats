@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 
+import { calculateAverage, calculateStrikeRate } from "@/lib/calculations";
 import { type TablesInsert } from "@/lib/supabase/database";
 import { createClient } from "@/lib/supabase/server";
 import { statsSchema } from "@/lib/validation";
@@ -23,7 +24,9 @@ export async function addStatsAction(data: z.infer<typeof statsSchema>) {
 		ducks: Number(batting.ducks),
 		fours: Number(batting.fours),
 		sixes: Number(batting.sixes),
-		not_outs: Number(batting.not_outs)
+		not_outs: Number(batting.not_outs),
+		strike_rate: calculateStrikeRate(Number(batting.runs), Number(batting.balls)),
+		average: calculateAverage(Number(batting.innings), Number(batting.not_outs), Number(batting.runs))
 	} satisfies TablesInsert<"batting">;
 
 	const bowlingStats = {

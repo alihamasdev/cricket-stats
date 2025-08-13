@@ -15,11 +15,14 @@ export function calculateBattingStats(stats: BattingStats[], player: string): Ba
 		{ matches: 0, innings: 0, balls: 0, runs: 0, sixes: 0, fours: 0, ducks: 0, not_outs: 0 }
 	);
 
-	const strikeRate = batting.balls > 0 ? (batting.runs / batting.balls) * 100 : 0;
-	const calcInnings = batting.innings > 0 ? batting.innings - batting.not_outs : 0;
-	const average = batting.innings > 0 ? batting.runs / (calcInnings > 0 ? calcInnings : 1) : 0;
-
-	return { ...batting, strike_rate: Math.round(strikeRate), average: Math.round(average), date: "", id: 1, player };
+	return {
+		...batting,
+		strike_rate: calculateStrikeRate(batting.runs, batting.balls),
+		average: calculateAverage(batting.innings, batting.not_outs, batting.runs),
+		date: "",
+		id: 1,
+		player
+	};
 }
 
 export function calculateBowlingStats(stats: BowlingStats[], player: string): BowlingStats {
@@ -61,6 +64,17 @@ export function calculateFieldingStats(stats: FieldingStats[], player: string): 
 	);
 
 	return { ...fielding, date: "", id: 1, player };
+}
+
+export function calculateAverage(innings: number, not_outs: number, runs: number) {
+	const calcInnings = innings > 0 ? innings - not_outs : 0;
+	const average = innings > 0 ? runs / (calcInnings > 0 ? calcInnings : 1) : 0;
+	return Math.round(average);
+}
+
+export function calculateStrikeRate(runs: number, balls: number) {
+	const strikeRate = balls > 0 ? (runs / balls) * 100 : 0;
+	return Math.round(strikeRate);
 }
 
 export function filterByDate<T>(data: Record<string, T>[], targetDate: string): T[] {

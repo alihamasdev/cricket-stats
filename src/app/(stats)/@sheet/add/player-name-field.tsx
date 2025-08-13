@@ -8,9 +8,8 @@ import { cn } from "@/lib/utils";
 import { StatsSchema } from "@/lib/validation";
 import { useStats } from "@/context/stats-context";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 export function PlayerNameField({ form }: { form: UseFormReturn<StatsSchema, "name"> }) {
@@ -21,27 +20,21 @@ export function PlayerNameField({ form }: { form: UseFormReturn<StatsSchema, "na
 		<FormField
 			name="name"
 			control={form.control}
-			render={({ field }) => (
+			render={({ field: { value } }) => (
 				<Fragment>
-					<div className="col-span-2">
-						<Avatar className="size-20">
-							<AvatarImage
-								src={`https://lhoxbzrtfoofydgvvfuu.supabase.co/storage/v1/object/public/avatars/${field.value}.png`}
-							/>
-							<AvatarFallback />
-						</Avatar>
-					</div>
-					<FormItem>
-						<FormLabel>Player</FormLabel>
+					<FormItem className="col-span-2">
 						<Popover open={open} onOpenChange={setOpen}>
 							<PopoverTrigger asChild>
-								<FormControl className="justify-start capitalize">
-									<Button variant="outline" className={cn(!field.value && "text-muted-foreground border-input")}>
-										{field.value ? players.find((name) => name === field.value) : "Select player"}
-									</Button>
+								<FormControl>
+									<Avatar className="size-30">
+										<AvatarImage
+											src={`https://lhoxbzrtfoofydgvvfuu.supabase.co/storage/v1/object/public/avatars/${value}.png`}
+										/>
+										<AvatarFallback />
+									</Avatar>
 								</FormControl>
 							</PopoverTrigger>
-							<PopoverContent className="p-0">
+							<PopoverContent className="p-0" align="end">
 								<Command>
 									<CommandInput placeholder="Search players..." className="h-9" />
 									<CommandList>
@@ -57,7 +50,7 @@ export function PlayerNameField({ form }: { form: UseFormReturn<StatsSchema, "na
 													}}
 												>
 													<span className="capitalize">{name}</span>
-													<Check className={cn("ml-auto", name === field.value ? "opacity-100" : "opacity-0")} />
+													<Check className={cn("ml-auto", name === value ? "opacity-100" : "opacity-0")} />
 												</CommandItem>
 											))}
 										</CommandGroup>
