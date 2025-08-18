@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { loginAction } from "./action";
 
 const loginSchema = z.object({
-	email: z.string().email("Invalid email address"),
+	email: z.email("Invalid email address"),
 	password: z.string().min(8, "Password must be atleast 8 characters long")
 });
 
@@ -22,10 +22,7 @@ export default function LoginPage() {
 
 	const form = useForm<z.infer<typeof loginSchema>>({
 		resolver: zodResolver(loginSchema),
-		defaultValues: {
-			email: "",
-			password: ""
-		}
+		defaultValues: { email: "", password: "" }
 	});
 
 	function onSubmit(values: z.infer<typeof loginSchema>) {
@@ -36,7 +33,7 @@ export default function LoginPage() {
 	}
 
 	return (
-		<div className="flex h-[calc(100dvh-68px)] items-center justify-center">
+		<div className="flex min-h-[calc(100dvh-122px)] items-center justify-center">
 			<div className="flex w-full max-w-sm flex-col gap-6">
 				<Card>
 					<CardHeader>
@@ -53,7 +50,7 @@ export default function LoginPage() {
 										<FormItem>
 											<FormLabel>Email</FormLabel>
 											<FormControl>
-												<Input placeholder="m@example.com" {...field} />
+												<Input {...field} />
 											</FormControl>
 											<FormMessage />
 										</FormItem>

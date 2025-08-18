@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, use, useEffect, useState } from "react";
+import { useQueryState } from "nuqs";
 
 import { filterByDate } from "@/lib/calculations";
 import type { DatesData, StatsData } from "@/lib/dal";
@@ -9,12 +10,10 @@ import type { BattingStats, BowlingStats, FieldingStats } from "@/lib/types";
 
 interface StatsContextType {
 	players: string[];
+	dates: DatesData;
 	battingStats: Tables<"batting">[];
 	bowlingStats: Tables<"bowling">[];
 	fieldingStats: Tables<"fielding">[];
-	dates: DatesData;
-	statsDate: string;
-	setStatsDate: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const StatsContext = createContext<StatsContextType | null>(null);
@@ -28,12 +27,13 @@ export function StatsProvider({ statsData, datesData, children }: React.PropsWit
 	const dates = use(datesData);
 	const { players, allTimeStats, batting, bowling, fielding } = use(statsData);
 
+	const [statsDate] = useQueryState("date");
+
 	const [battingStats, setBattingStats] = useState<BattingStats[]>(() => allTimeStats.map(({ batting }) => batting));
 	const [bowlingStats, setBowlingStats] = useState<BowlingStats[]>(() => allTimeStats.map(({ bowling }) => bowling));
 	const [fieldingStats, setFieldingStats] = useState<FieldingStats[]>(() =>
 		allTimeStats.map(({ fielding }) => fielding)
 	);
-	const [statsDate, setStatsDate] = useState<string>("");
 
 	useEffect(() => {
 		if (statsDate) {
@@ -47,11 +47,7 @@ export function StatsProvider({ statsData, datesData, children }: React.PropsWit
 		}
 	}, [allTimeStats, batting, bowling, fielding, statsDate]);
 
-	return (
-		<StatsContext value={{ players, battingStats, bowlingStats, fieldingStats, dates, statsDate, setStatsDate }}>
-			{children}
-		</StatsContext>
-	);
+	return <StatsContext value={{ players, battingStats, bowlingStats, fieldingStats, dates }}>{children}</StatsContext>;
 }
 
 export function useStats(): StatsContextType {

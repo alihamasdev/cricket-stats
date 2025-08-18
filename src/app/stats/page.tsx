@@ -3,8 +3,8 @@
 import { useQueryState } from "nuqs";
 
 import { useStats } from "@/context/stats-context";
-import { battingColumns, bowlingColumns, fieldingColumns } from "@/components/columns";
-import { StatsTable } from "@/components/stats-table";
+import { battingColumns, bowlingColumns, fieldingColumns } from "@/components/stats/columns";
+import { StatsTable } from "@/components/stats/stats-table";
 
 export default function StatsPage() {
 	const { battingStats, bowlingStats, fieldingStats } = useStats();

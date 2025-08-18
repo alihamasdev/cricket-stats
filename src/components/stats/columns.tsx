@@ -3,13 +3,27 @@
 import type { Column, ColumnDef } from "@tanstack/react-table";
 
 import type { BattingStats, BowlingStats, FieldingStats } from "@/lib/types";
-import { PlayerAvatarName } from "@/components/player-avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 function ColumnHeader<T>({ column, title }: { column: Column<T>; title: React.ReactNode }) {
 	return (
 		<button className="cursor-pointer" onClick={() => column.toggleSorting(true)}>
 			{title}
 		</button>
+	);
+}
+
+function PlayerAvatarName({ name }: { name: string }) {
+	const src = `https://lhoxbzrtfoofydgvvfuu.supabase.co/storage/v1/object/public/avatars/${name}.png`;
+
+	return (
+		<div className="flex items-center gap-x-2">
+			<Avatar className="size-6 md:size-8">
+				<AvatarImage src={src} />
+				<AvatarFallback />
+			</Avatar>
+			<p className="font-medium capitalize">{name}</p>
+		</div>
 	);
 }
 

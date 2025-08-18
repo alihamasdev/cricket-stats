@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { MoonStar, SunMedium } from "lucide-react";
 import { useTheme } from "next-themes";
 
@@ -11,11 +12,19 @@ export function Footer() {
 			<div className="container mx-auto flex items-center justify-between">
 				<p className="text-muted-foreground text-sm">
 					&#169; 2025{" "}
-					<a href="http://alihamas.vercel.app" target="_blank" className="hover:underline">
+					<a href="https://alihamas.vercel.app" target="_blank" className="hover:underline">
 						Ali Hamas
 					</a>
 					, Inc.
 				</p>
+				<div className="text-muted-foreground flex items-center gap-x-4 text-sm font-medium *:hover:underline">
+					<Link href="/stats" prefetch={false}>
+						Stats
+					</Link>
+					<Link href="/scorecard" prefetch={false}>
+						Scorecard
+					</Link>
+				</div>
 				<div className="flex items-center rounded-full border p-0.5">
 					<div
 						onClick={() => setTheme("light")}

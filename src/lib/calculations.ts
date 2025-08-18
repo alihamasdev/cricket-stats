@@ -40,16 +40,16 @@ export function calculateBowlingStats(stats: BowlingStats[], player: string): Bo
 		{ matches: 0, innings: 0, overs: 0, wickets: 0, runs: 0, dots: 0, wides: 0, no_balls: 0 }
 	);
 
-	const oversString = bowling.overs.toString().split(".");
-	const completedOvers = Number(oversString[0]);
-	const extraBalls = Number(oversString[1]);
+	const overs = Number(bowling.overs.toFixed(1));
+	const completedOvers = Math.floor(overs);
+	const extraBalls = overs - completedOvers;
 
-	if (extraBalls >= 6) {
-		const remExtraBalls = (extraBalls - 6) * 0.1;
-		return { ...bowling, overs: completedOvers + 1 + remExtraBalls, date: "", id: 1, player };
+	if (extraBalls) {
+		const calOvers = extraBalls > 0.6 ? completedOvers + 1 + extraBalls - 0.6 : overs;
+		return { ...bowling, overs: Number(calOvers.toFixed(1)), date: "", id: 1, player };
 	}
 
-	return { ...bowling, date: "", id: 1, player };
+	return { ...bowling, overs, date: "", id: 1, player };
 }
 
 export function calculateFieldingStats(stats: FieldingStats[], player: string): FieldingStats {

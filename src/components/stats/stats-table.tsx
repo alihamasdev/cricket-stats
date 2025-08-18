@@ -2,7 +2,6 @@
 
 import { Fragment, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
 import { Plus } from "lucide-react";
 
@@ -12,8 +11,8 @@ import { DataTable } from "@/components/ui/data-table";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
-import { DateFilter } from "@/components/date-filter";
-import { StatsTypeFilter } from "@/components/stats-type-filter";
+import { DateFilter } from "@/components/stats/date-filter";
+import { StatsTypeFilter } from "@/components/stats/stats-type-filter";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
@@ -27,10 +26,6 @@ export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 
 	const [show, setShow] = useState(false);
 
-	const searchParams = useSearchParams();
-
-	const statsType = searchParams.get("type") ? `${searchParams.get("type")} stats` : "batting stats";
-
 	return (
 		<Fragment>
 			<header className="flex w-full flex-col items-center justify-between gap-y-4 pb-6 md:flex-row md:gap-x-4">
@@ -38,7 +33,7 @@ export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 					className="text-center text-2xl/9 font-bold capitalize md:text-left"
 					onDoubleClick={() => setShow((prev) => !prev)}
 				>
-					{statsType}
+					Ghurki Cricket Stats
 				</h1>
 				<div className="flex w-full flex-col gap-4 md:w-auto md:flex-row">
 					<Input
@@ -50,8 +45,8 @@ export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 					<div className="flex w-full items-center justify-between gap-x-4 md:w-auto">
 						<DateFilter />
 						<StatsTypeFilter />
-						<Button className="hidden md:inline-flex" asChild>
-							<Link href="/add">
+						<Button asChild>
+							<Link href="/stats/add">
 								<Plus />
 								Add Stats
 							</Link>
@@ -63,7 +58,7 @@ export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 				<ResizablePanel defaultSize={100} minSize={50} className={show ? "space-y-2 p-2" : ""}>
 					{show && (
 						<div className="flex items-center justify-between">
-							<h1 className="text-left text-xl/8 font-bold capitalize">{statsType}</h1>
+							<input className="w-full text-left text-xl/8 font-bold capitalize" defaultValue="Stats" />
 							<DateFilter size="sm" />
 						</div>
 					)}

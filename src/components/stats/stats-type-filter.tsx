@@ -18,9 +18,9 @@ export function StatsTypeFilter() {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button variant="outline">
+				<Button variant="outline" className="capitalize">
 					<ArrowUpDown />
-					Stats Type
+					{statTypeParam} stats
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
