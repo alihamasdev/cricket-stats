@@ -4,52 +4,49 @@ import { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import { cn } from "@/lib/utils";
 import { statsSchema } from "@/lib/validation";
 import { useStats } from "@/context/stats-context";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PlayerField } from "@/components/player-field";
 
 import { addStatsAction } from "./action";
-import { PlayerNameField } from "./player-name-field";
 
 export default function AddStatsPage() {
-	const { dates } = useStats();
+	const { dates, players } = useStats();
 	const [isPending, startTransition] = useTransition();
 
+	const defaultValues = {
+		name: "",
+		date: dates[0].date,
+		matches: dates[0].matches.toString(),
+		batting: { innings: "", runs: "", balls: "", fours: "", sixes: "", ducks: "", not_outs: "" },
+		bowling: { innings: "", dots: "", no_balls: "0", overs: "", runs: "", wickets: "", wides: "" },
+		fielding: { catches: "0", run_outs: "0", stumpings: "0" }
+	};
+
 	const form = useForm<z.infer<typeof statsSchema>>({
+		defaultValues,
 		mode: "onChange",
-		resolver: zodResolver(statsSchema),
-		defaultValues: {
-			name: "",
-			matches: "",
-			date: dates[0].date,
-			batting: { innings: "", runs: "", balls: "", fours: "", sixes: "", ducks: "", not_outs: "" },
-			bowling: { innings: "", dots: "", no_balls: "0", overs: "", runs: "", wickets: "", wides: "" },
-			fielding: { catches: "0", run_outs: "0", stumpings: "0" }
-		}
+		resolver: zodResolver(statsSchema)
 	});
 
 	function onSubmit(values: z.infer<typeof statsSchema>) {
 		startTransition(async () => {
 			const { error } = await addStatsAction(values);
 			if (error) {
-				form.setError("root", { message: error, type: "deps" });
-				return;
+				toast.error(error);
+			} else {
+				form.reset(defaultValues);
 			}
-			form.reset({
-				name: "",
-				matches: "",
-				date: dates[0].date,
-				batting: { innings: "", runs: "", balls: "", fours: "", sixes: "", ducks: "", not_outs: "" },
-				bowling: { innings: "", dots: "", no_balls: "0", overs: "", runs: "", wickets: "", wides: "" },
-				fielding: { catches: "0", run_outs: "0", stumpings: "0" }
-			});
 		});
 	}
 
@@ -57,7 +54,23 @@ export default function AddStatsPage() {
 		<div className="mx-auto w-full max-w-4xl">
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-5">
-					<PlayerNameField form={form} />
+					<FormField
+						name="name"
+						control={form.control}
+						render={({ field }) => (
+							<FormItem className="col-span-2">
+								<PlayerField players={players} value={field.value} onSelect={(value) => form.setValue("name", value)}>
+									<FormControl>
+										<Avatar className="size-30">
+											<AvatarImage src={`/players/${field.value}.png`} />
+											<AvatarFallback />
+										</Avatar>
+									</FormControl>
+								</PlayerField>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
 					<FormField
 						name="matches"
@@ -101,13 +114,13 @@ export default function AddStatsPage() {
 
 					<Tabs defaultValue="batting" className="col-span-2 gap-5">
 						<TabsList className="flex h-10 w-full justify-center p-1">
-							<TabsTrigger value="batting" className={cn(form.formState.errors.batting && "text-destructive")}>
+							<TabsTrigger value="batting" className={cn(form.formState.errors.batting && "!text-destructive")}>
 								Batting
 							</TabsTrigger>
-							<TabsTrigger value="bowling" className={cn(form.formState.errors.bowling && "text-destructive")}>
+							<TabsTrigger value="bowling" className={cn(form.formState.errors.bowling && "!text-destructive")}>
 								Bowling
 							</TabsTrigger>
-							<TabsTrigger value="fielding" className={cn(form.formState.errors.fielding && "text-destructive")}>
+							<TabsTrigger value="fielding" className={cn(form.formState.errors.fielding && "!text-destructive")}>
 								Fielding
 							</TabsTrigger>
 						</TabsList>
@@ -360,12 +373,8 @@ export default function AddStatsPage() {
 						</TabsContent>
 					</Tabs>
 
-					{form.formState.errors.root && (
-						<p className="text-destructive col-span-2 text-center font-medium">{form.formState.errors.root.message}</p>
-					)}
-
 					<Button type="submit" className="col-span-2 w-fit" disabled={isPending}>
-						Submit
+						{isPending ? "Submitting...." : "Submit"}
 					</Button>
 				</form>
 			</Form>
