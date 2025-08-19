@@ -1,15 +1,12 @@
 "use client";
 
 import { useId } from "react";
-import { Check } from "lucide-react";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Slider } from "@/components/ui/slider";
+import { PlayerField } from "@/components/player-field";
 
 export function InputLabel({ label, ...props }: React.ComponentProps<typeof Input> & { label: string }) {
 	const id = useId();
@@ -38,40 +35,15 @@ export function SliderLabel({ label, ...props }: React.ComponentProps<typeof Sli
 	);
 }
 
-interface ComboBoxLabel extends React.ComponentProps<typeof CommandItem> {
-	label: string;
-	players: string[];
-}
-
-export function ComboBoxLabel({ label, value, players, ...props }: ComboBoxLabel) {
-	const id = useId();
-
+export function PlayerNameField({ value, players, ...props }: React.ComponentProps<typeof PlayerField>) {
 	return (
 		<div className="space-y-2">
-			<Label htmlFor={id}>{label}</Label>
-			<Popover>
-				<PopoverTrigger asChild>
-					<Button variant="outline" className="w-full justify-between font-normal capitalize">
-						{value ? players.find((player) => player === value) : ""}
-					</Button>
-				</PopoverTrigger>
-				<PopoverContent className="w-full p-0">
-					<Command>
-						<CommandInput placeholder="Search player..." className="h-9" />
-						<CommandList>
-							<CommandEmpty>No player found</CommandEmpty>
-							<CommandGroup>
-								{players.map((player) => (
-									<CommandItem value={player} key={player} className="capitalize" {...props}>
-										{player}
-										<Check className={cn("ml-auto", player === value ? "opacity-100" : "opacity-0")} />
-									</CommandItem>
-								))}
-							</CommandGroup>
-						</CommandList>
-					</Command>
-				</PopoverContent>
-			</Popover>
+			<Label>Name</Label>
+			<PlayerField value={value} players={players} {...props}>
+				<Button variant="outline" className="w-full justify-between font-normal capitalize">
+					{value ? players.find((player) => player === value) : ""}
+				</Button>
+			</PlayerField>
 		</div>
 	);
 }

@@ -2,7 +2,7 @@
 
 import { Fragment, useRef, useState } from "react";
 import domtoimage from "dom-to-image";
-import { Download } from "lucide-react";
+import { Download, RefreshCcw, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,7 +11,6 @@ import { InputLabel, SliderLabel } from "@/components/scorecard/label-fields";
 import { TeamForm } from "@/components/scorecard/team-form";
 import { TeamPlayersCard } from "@/components/scorecard/team-players-card";
 import { TeamStats } from "@/components/scorecard/team-stats";
-import { TeamTitleRow } from "@/components/scorecard/team-title-row";
 import type { CanvasSetting, MatchInfo, Team } from "@/components/scorecard/types";
 
 export default function Page() {
@@ -93,6 +92,7 @@ export default function Page() {
 						setTeam2((prevState) => ({ ...prevState, score: "", wickets: "", batters: [], bowlers: [] }));
 					}}
 				>
+					<X />
 					Reset Teams
 				</Button>
 				<Button
@@ -102,6 +102,7 @@ export default function Page() {
 						setTeam2(team1);
 					}}
 				>
+					<RefreshCcw />
 					Swap Team
 				</Button>
 				<Button onClick={downloadScorecard}>

@@ -5,7 +5,7 @@ import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Toggle } from "@/components/ui/toggle";
-import { ComboBoxLabel, InputLabel } from "@/components/scorecard/label-fields";
+import { InputLabel, PlayerNameField } from "@/components/scorecard/label-fields";
 import type { BattingPlayer, BowlingPlayer, Team } from "@/components/scorecard/types";
 
 interface TeamFormProps {
@@ -14,42 +14,18 @@ interface TeamFormProps {
 }
 
 export function TeamForm({ team, setTeamAction }: TeamFormProps) {
-	const updatePlayer = <T extends "batter" | "bowler">(
-		index: number,
-		type: T,
-		field: T extends "batter" ? keyof BattingPlayer : keyof BowlingPlayer,
-		value: string | boolean
-	) => {
-		if (type === "batter") {
-			setTeamAction((prev) => ({
-				...prev,
-				batters: prev.batters.map((player, i) => (i === index ? { ...player, [field]: value } : player))
-			}));
-		} else {
-			setTeamAction((prev) => ({
-				...prev,
-				bowlers: prev.bowlers.map((player, i) => (i === index ? { ...player, [field]: value } : player))
-			}));
-		}
+	const updateBatter = (index: number, field: keyof BattingPlayer, value: string | boolean) => {
+		setTeamAction((prev) => ({
+			...prev,
+			batters: prev.batters.map((player, i) => (i === index ? { ...player, [field]: value } : player))
+		}));
 	};
 
-	const addPlayer = (type: "batter" | "bowler") => {
-		if (type === "batter") {
-			setTeamAction((prev) => ({ ...prev, batters: [...prev.batters, { name: "", balls: "", runs: "", out: true }] }));
-		} else {
-			setTeamAction((prev) => ({
-				...prev,
-				bowlers: [...prev.bowlers, { name: "", runs: "", wickets: "0", overs: "1.0" }]
-			}));
-		}
-	};
-
-	const removePlayer = (type: "batter" | "bowler", index: number) => {
-		if (type === "batter") {
-			setTeamAction((prev) => ({ ...prev, batters: prev.batters.filter((_player, idx) => index !== idx) }));
-		} else {
-			setTeamAction((prev) => ({ ...prev, bowlers: prev.bowlers.filter((_player, idx) => index !== idx) }));
-		}
+	const updateBowler = (index: number, field: keyof BowlingPlayer, value: string) => {
+		setTeamAction((prev) => ({
+			...prev,
+			bowlers: prev.bowlers.map((player, i) => (i === index ? { ...player, [field]: value } : player))
+		}));
 	};
 
 	return (
@@ -73,10 +49,7 @@ export function TeamForm({ team, setTeamAction }: TeamFormProps) {
 					value={team.overs}
 					onChange={(e) => setTeamAction((prev) => ({ ...prev, overs: e.target.value }))}
 				/>
-				<Toggle
-					pressed={team.allOut}
-					onPressedChange={(value) => setTeamAction((prev) => ({ ...prev, allOut: value }))}
-				>
+				<Toggle pressed={team.allOut} onPressedChange={(value) => setTeamAction((prev) => ({ ...prev, allOut: value }))}>
 					All Out
 				</Toggle>
 			</div>
@@ -84,7 +57,10 @@ export function TeamForm({ team, setTeamAction }: TeamFormProps) {
 			<div className="space-y-3">
 				<div className="flex items-center justify-between">
 					<h2 className="text-xl/9 font-bold">Batters</h2>
-					<Button size="sm" onClick={() => addPlayer("batter")}>
+					<Button
+						size="sm"
+						onClick={() => setTeamAction((p) => ({ ...p, batters: [...p.batters, { name: "", balls: "", runs: "", out: true }] }))}
+					>
 						<Plus />
 						Add Batter
 					</Button>
@@ -92,27 +68,17 @@ export function TeamForm({ team, setTeamAction }: TeamFormProps) {
 				<Separator />
 				{team.batters.map(({ name, balls, runs, out }, index) => (
 					<div key={index} className="grid grid-cols-[1fr_1fr_1fr_1fr_36px] items-end gap-4">
-						<ComboBoxLabel
-							label="Name"
-							value={name}
-							players={team.players}
-							onSelect={(value) => updatePlayer(index, "batter", "name", value)}
-						/>
-
-						<InputLabel
-							label="Runs"
-							value={runs}
-							onChange={(e) => updatePlayer(index, "batter", "runs", e.target.value)}
-						/>
-						<InputLabel
-							label="Balls"
-							value={balls}
-							onChange={(e) => updatePlayer(index, "batter", "balls", e.target.value)}
-						/>
-						<Toggle pressed={out} onPressedChange={(value) => updatePlayer(index, "batter", "out", value)}>
+						<PlayerNameField value={name} players={team.players} onSelect={(value) => updateBatter(index, "name", value)} />
+						<InputLabel label="Runs" value={runs} onChange={(e) => updateBatter(index, "runs", e.target.value)} />
+						<InputLabel label="Balls" value={balls} onChange={(e) => updateBatter(index, "balls", e.target.value)} />
+						<Toggle pressed={out} onPressedChange={(value) => updateBatter(index, "out", value)}>
 							{out ? "Out" : "Not Out"}
 						</Toggle>
-						<Button size="icon" variant="secondary" onClick={() => removePlayer("batter", index)}>
+						<Button
+							size="icon"
+							variant="secondary"
+							onClick={() => setTeamAction((p) => ({ ...p, batters: p.batters.filter((_, idx) => index !== idx) }))}
+						>
 							<X />
 						</Button>
 					</div>
@@ -122,7 +88,10 @@ export function TeamForm({ team, setTeamAction }: TeamFormProps) {
 			<div className="space-y-3">
 				<div className="flex items-center justify-between">
 					<h2 className="text-xl/9 font-bold">Bowlers</h2>
-					<Button size="sm" onClick={() => addPlayer("bowler")}>
+					<Button
+						size="sm"
+						onClick={() => setTeamAction((p) => ({ ...p, bowlers: [...p.bowlers, { name: "", runs: "", wickets: "0", overs: "1.0" }] }))}
+					>
 						<Plus />
 						Add Bowler
 					</Button>
@@ -130,28 +99,15 @@ export function TeamForm({ team, setTeamAction }: TeamFormProps) {
 				<Separator />
 				{team.bowlers.map(({ name, overs, runs, wickets }, index) => (
 					<div key={index} className="grid grid-cols-[1fr_1fr_1fr_1fr_36px] items-end gap-4">
-						<ComboBoxLabel
-							label="Name"
-							value={name}
-							players={team.players}
-							onSelect={(value) => updatePlayer(index, "bowler", "name", value)}
-						/>
-						<InputLabel
-							label="Runs"
-							value={runs}
-							onChange={(e) => updatePlayer(index, "bowler", "runs", e.target.value)}
-						/>
-						<InputLabel
-							label="Wickets"
-							value={wickets}
-							onChange={(e) => updatePlayer(index, "bowler", "wickets", e.target.value)}
-						/>
-						<InputLabel
-							label="Overs"
-							value={overs}
-							onChange={(e) => updatePlayer(index, "bowler", "overs", e.target.value)}
-						/>
-						<Button size="icon" variant="secondary" onClick={() => removePlayer("bowler", index)}>
+						<PlayerNameField value={name} players={team.players} onSelect={(value) => updateBowler(index, "name", value)} />
+						<InputLabel label="Runs" value={runs} onChange={(e) => updateBowler(index, "runs", e.target.value)} />
+						<InputLabel label="Wickets" value={wickets} onChange={(e) => updateBowler(index, "wickets", e.target.value)} />
+						<InputLabel label="Overs" value={overs} onChange={(e) => updateBowler(index, "overs", e.target.value)} />
+						<Button
+							size="icon"
+							variant="secondary"
+							onClick={() => setTeamAction((p) => ({ ...p, bowlers: p.bowlers.filter((_, idx) => index !== idx) }))}
+						>
 							<X />
 						</Button>
 					</div>
