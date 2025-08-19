@@ -59,15 +59,15 @@ export async function addStatsAction(data: z.infer<typeof statsSchema>) {
 
 	if (battingError) {
 		console.error(battingError);
-		return { error: "Batting insert error" };
+		return { error: `Batting error: ${battingError.message}` };
 	}
 	if (bowlingError) {
 		console.error(bowlingError);
-		return { error: "Bowling insert error" };
+		return { error: `Bowling error: ${bowlingError.message}` };
 	}
 	if (fieldingError) {
 		console.error(fieldingError);
-		return { error: "Fielding insert error" };
+		return { error: `Fielding error: ${fieldingError.message}` };
 	}
 
 	return { error: null };

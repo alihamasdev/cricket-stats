@@ -7,5 +7,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ["/stats/add"]
+	matcher: ["/stats/add-stats", "/stats/add-wicket"]
 };

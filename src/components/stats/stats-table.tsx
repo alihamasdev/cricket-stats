@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
 import { Plus } from "lucide-react";
@@ -27,8 +27,8 @@ export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 	const [show, setShow] = useState(false);
 
 	return (
-		<Fragment>
-			<header className="flex w-full flex-col items-center justify-between gap-y-4 pb-6 md:flex-row md:gap-x-4">
+		<div className="mb-auto w-full">
+			<div className="flex w-full flex-col items-center justify-between gap-y-4 pb-6 md:flex-row md:gap-x-4">
 				<h1 className="text-center text-2xl/9 font-bold capitalize md:text-left" onDoubleClick={() => setShow((prev) => !prev)}>
 					Ghurki Cricket Stats
 				</h1>
@@ -43,14 +43,14 @@ export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 						<DateFilter />
 						<StatsTypeFilter />
 						<Button asChild>
-							<Link href="/stats/add">
+							<Link href="/stats/add-stats">
 								<Plus />
 								Add Stats
 							</Link>
 						</Button>
 					</div>
 				</div>
-			</header>
+			</div>
 			<ResizablePanelGroup direction="horizontal">
 				<ResizablePanel defaultSize={100} minSize={50} className={show ? "space-y-2 p-2" : ""}>
 					{show && (
@@ -79,6 +79,6 @@ export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 					</div>
 				</ResizablePanel>
 			</ResizablePanelGroup>
-		</Fragment>
+		</div>
 	);
 }

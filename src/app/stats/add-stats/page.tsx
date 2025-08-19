@@ -42,16 +42,14 @@ export default function AddStatsPage() {
 	function onSubmit(values: z.infer<typeof statsSchema>) {
 		startTransition(async () => {
 			const { error } = await addStatsAction(values);
-			if (error) {
-				toast.error(error);
-			} else {
-				form.reset(defaultValues);
-			}
+			// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+			error ? toast.error(error) : form.reset(defaultValues);
 		});
 	}
 
 	return (
 		<div className="mx-auto w-full max-w-4xl">
+			<h1 className="mb-10 text-center text-2xl/9 font-bold capitalize md:text-left">Add Stats</h1>
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-5">
 					<FormField
@@ -112,7 +110,7 @@ export default function AddStatsPage() {
 						)}
 					/>
 
-					<Tabs defaultValue="batting" className="col-span-2 gap-5">
+					<Tabs defaultValue="fielding" className="col-span-2 gap-5">
 						<TabsList className="flex h-10 w-full justify-center p-1">
 							<TabsTrigger value="batting" className={cn(form.formState.errors.batting && "!text-destructive")}>
 								Batting

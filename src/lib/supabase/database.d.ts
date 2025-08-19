@@ -1,6 +1,8 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
+	// Allows to automatically instantiate createClient with right options
+	// instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
 	__InternalSupabase: {
 		PostgrestVersion: "13.0.4";
 	};
@@ -14,10 +16,10 @@ export type Database = {
 		Functions: {
 			graphql: {
 				Args: {
+					extensions?: Json;
 					operationName?: string;
 					query?: string;
 					variables?: Json;
-					extensions?: Json;
 				};
 				Returns: Json;
 			};
@@ -154,14 +156,17 @@ export type Database = {
 			dates: {
 				Row: {
 					date: string;
+					matches: number;
 					title: string;
 				};
 				Insert: {
 					date: string;
+					matches: number;
 					title: string;
 				};
 				Update: {
 					date?: string;
+					matches?: number;
 					title?: string;
 				};
 				Relationships: [];
@@ -222,6 +227,49 @@ export type Database = {
 					name?: string;
 				};
 				Relationships: [];
+			};
+			wickets: {
+				Row: {
+					batsman: string;
+					bowler: string;
+					date: string;
+					id: number;
+				};
+				Insert: {
+					batsman: string;
+					bowler: string;
+					date: string;
+					id?: number;
+				};
+				Update: {
+					batsman?: string;
+					bowler?: string;
+					date?: string;
+					id?: number;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "wickets_batsman_fkey";
+						columns: ["batsman"];
+						isOneToOne: false;
+						referencedRelation: "players";
+						referencedColumns: ["name"];
+					},
+					{
+						foreignKeyName: "wickets_bowler_fkey";
+						columns: ["bowler"];
+						isOneToOne: false;
+						referencedRelation: "players";
+						referencedColumns: ["name"];
+					},
+					{
+						foreignKeyName: "wickets_date_fkey";
+						columns: ["date"];
+						isOneToOne: false;
+						referencedRelation: "dates";
+						referencedColumns: ["date"];
+					}
+				];
 			};
 		};
 		Views: {
@@ -332,9 +380,7 @@ export type Enums<
 		: never;
 
 export type CompositeTypes<
-	PublicCompositeTypeNameOrOptions extends
-		| keyof DefaultSchema["CompositeTypes"]
-		| { schema: keyof DatabaseWithoutInternals },
+	PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"] | { schema: keyof DatabaseWithoutInternals },
 	CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
 		schema: keyof DatabaseWithoutInternals;
 	}

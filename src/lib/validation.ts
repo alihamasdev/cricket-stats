@@ -43,4 +43,8 @@ export const statsSchema = z
 		path: ["bowlingOvers"]
 	});
 
-export type StatsSchema = z.infer<typeof statsSchema>;
+export const wicketSchema = z.object({
+	batsman: statsFormValue,
+	bowler: statsFormValue,
+	date: statsFormValue
+});

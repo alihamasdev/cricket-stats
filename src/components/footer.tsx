@@ -17,9 +17,15 @@ export function Footer() {
 					</a>
 					, Inc.
 				</p>
-				<div className="text-muted-foreground flex items-center gap-x-4 text-sm font-medium *:hover:underline">
+				<div className="text-muted-foreground flex items-center gap-x-4 text-sm *:hover:underline">
 					<Link href="/stats" prefetch={false}>
 						Stats
+					</Link>
+					<Link href="/stats/add-stats" prefetch={false}>
+						Add Stats
+					</Link>
+					<Link href="/stats/add-wicket" prefetch={false}>
+						Add Wickets
 					</Link>
 					<Link href="/scorecard" prefetch={false}>
 						Scorecard
