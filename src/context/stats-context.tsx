@@ -31,9 +31,7 @@ export function StatsProvider({ statsData, datesData, children }: React.PropsWit
 
 	const [battingStats, setBattingStats] = useState<BattingStats[]>(() => allTimeStats.map(({ batting }) => batting));
 	const [bowlingStats, setBowlingStats] = useState<BowlingStats[]>(() => allTimeStats.map(({ bowling }) => bowling));
-	const [fieldingStats, setFieldingStats] = useState<FieldingStats[]>(() =>
-		allTimeStats.map(({ fielding }) => fielding)
-	);
+	const [fieldingStats, setFieldingStats] = useState<FieldingStats[]>(() => allTimeStats.map(({ fielding }) => fielding));
 
 	useEffect(() => {
 		if (statsDate) {

@@ -8,12 +8,7 @@ const TagsInput = React.forwardRef<
 	React.ComponentRef<typeof TagsInputPrimitive.Root>,
 	React.ComponentPropsWithoutRef<typeof TagsInputPrimitive.Root>
 >(({ className, ...props }, ref) => (
-	<TagsInputPrimitive.Root
-		data-slot="tags-input"
-		ref={ref}
-		className={cn("flex w-full flex-col gap-2", className)}
-		{...props}
-	/>
+	<TagsInputPrimitive.Root data-slot="tags-input" ref={ref} className={cn("flex w-full flex-col gap-2", className)} {...props} />
 ));
 TagsInput.displayName = TagsInputPrimitive.Root.displayName;
 
@@ -24,28 +19,23 @@ const TagsInputLabel = React.forwardRef<
 	<TagsInputPrimitive.Label
 		data-slot="tags-input-label"
 		ref={ref}
-		className={cn(
-			"text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
-			className
-		)}
+		className={cn("text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70", className)}
 		{...props}
 	/>
 ));
 TagsInputLabel.displayName = TagsInputPrimitive.Label.displayName;
 
-const TagsInputList = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<"div">>(
-	({ className, ...props }, ref) => (
-		<div
-			data-slot="tags-input-list"
-			ref={ref}
-			className={cn(
-				"flex w-full flex-wrap items-center gap-1.5 rounded-md text-sm disabled:cursor-not-allowed disabled:opacity-50",
-				className
-			)}
-			{...props}
-		/>
-	)
-);
+const TagsInputList = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<"div">>(({ className, ...props }, ref) => (
+	<div
+		data-slot="tags-input-list"
+		ref={ref}
+		className={cn(
+			"flex w-full flex-wrap items-center gap-1.5 rounded-md text-sm disabled:cursor-not-allowed disabled:opacity-50",
+			className
+		)}
+		{...props}
+	/>
+));
 TagsInputList.displayName = "TagsInputList";
 
 const TagsInputInput = React.forwardRef<

@@ -29,10 +29,7 @@ export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 	return (
 		<Fragment>
 			<header className="flex w-full flex-col items-center justify-between gap-y-4 pb-6 md:flex-row md:gap-x-4">
-				<h1
-					className="text-center text-2xl/9 font-bold capitalize md:text-left"
-					onDoubleClick={() => setShow((prev) => !prev)}
-				>
+				<h1 className="text-center text-2xl/9 font-bold capitalize md:text-left" onDoubleClick={() => setShow((prev) => !prev)}>
 					Ghurki Cricket Stats
 				</h1>
 				<div className="flex w-full flex-col gap-4 md:w-auto md:flex-row">
@@ -74,10 +71,7 @@ export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 							.map((column) => {
 								return (
 									<Label key={column.id} className="capitalize">
-										<Checkbox
-											checked={column.getIsVisible()}
-											onCheckedChange={(value) => column.toggleVisibility(!!value)}
-										/>
+										<Checkbox checked={column.getIsVisible()} onCheckedChange={(value) => column.toggleVisibility(!!value)} />
 										{column.id.split("_").join(" ")}
 									</Label>
 								);
