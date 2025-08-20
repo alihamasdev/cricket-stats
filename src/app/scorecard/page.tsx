@@ -1,8 +1,7 @@
 "use client";
 
-import { Fragment, useRef, useState } from "react";
-import domtoimage from "dom-to-image";
-import { Download, RefreshCcw, X } from "lucide-react";
+import { Fragment, useState } from "react";
+import { RefreshCcw, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,7 +13,6 @@ import { TeamStats } from "@/components/scorecard/team-stats";
 import type { CanvasSetting, MatchInfo, Team } from "@/components/scorecard/types";
 
 export default function Page() {
-	const scorecardRef = useRef<HTMLDivElement>(null);
 	const [matchInfo, setMatchInfo] = useState<MatchInfo>({ title: "Match 01", result: "Match result" });
 	const [canvasSetting, setCanvasSetting] = useState<CanvasSetting>({ padding: 175, backgroundOpacity: 0.3 });
 
@@ -40,30 +38,12 @@ export default function Page() {
 		bowlers: []
 	});
 
-	const downloadScorecard = async () => {
-		if (!scorecardRef.current) return;
-
-		try {
-			const dataUrl = await domtoimage.toPng(scorecardRef.current, { quality: 100 });
-
-			const link = document.createElement("a");
-			link.download = `${matchInfo.title}.png`;
-			link.href = dataUrl;
-			link.click();
-		} catch (error) {
-			console.error("Error downloading scorecard:", error);
-		}
-	};
-
 	return (
 		<Fragment>
+			<h1 className="mb-5 w-full text-left text-2xl/9 font-bold capitalize">Match Scorecard</h1>
 			<section
-				ref={scorecardRef}
 				className="relative flex aspect-video size-full items-center justify-center rounded bg-center bg-no-repeat object-cover"
-				style={{
-					backgroundImage: "url(/lords.png)",
-					paddingInline: canvasSetting.padding
-				}}
+				style={{ backgroundImage: "url(/lords.png)", paddingInline: canvasSetting.padding }}
 			>
 				<div className="relative z-1 grid aspect-video w-full grid-cols-2 grid-rows-[44px_60px_1fr_60px] gap-3">
 					<div className="bg-gradient-end col-span-2 mx-auto w-fit rounded-full px-8 text-white">
@@ -88,16 +68,6 @@ export default function Page() {
 				<Button
 					variant="outline"
 					onClick={() => {
-						setTeam1((prevState) => ({ ...prevState, score: "", wickets: "", batters: [], bowlers: [] }));
-						setTeam2((prevState) => ({ ...prevState, score: "", wickets: "", batters: [], bowlers: [] }));
-					}}
-				>
-					<X />
-					Reset Teams
-				</Button>
-				<Button
-					variant="outline"
-					onClick={() => {
 						setTeam1(team2);
 						setTeam2(team1);
 					}}
@@ -105,9 +75,15 @@ export default function Page() {
 					<RefreshCcw />
 					Swap Team
 				</Button>
-				<Button onClick={downloadScorecard}>
-					<Download />
-					Download
+				<Button
+					variant="destructive"
+					onClick={() => {
+						setTeam1((prevState) => ({ ...prevState, score: "", wickets: "", batters: [], bowlers: [] }));
+						setTeam2((prevState) => ({ ...prevState, score: "", wickets: "", batters: [], bowlers: [] }));
+					}}
+				>
+					<X />
+					Reset Teams
 				</Button>
 			</div>
 

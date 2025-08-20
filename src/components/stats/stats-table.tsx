@@ -27,8 +27,8 @@ export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 	const [show, setShow] = useState(false);
 
 	return (
-		<div className="mb-auto w-full">
-			<div className="flex w-full flex-col items-center justify-between gap-y-4 pb-6 md:flex-row md:gap-x-4">
+		<div className="mb-auto w-full space-y-6">
+			<div className="flex w-full flex-col items-center justify-between gap-y-4 md:flex-row md:gap-x-4">
 				<h1 className="text-center text-2xl/9 font-bold capitalize md:text-left" onDoubleClick={() => setShow((prev) => !prev)}>
 					Ghurki Cricket Stats
 				</h1>
