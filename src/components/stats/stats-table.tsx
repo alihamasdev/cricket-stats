@@ -43,7 +43,7 @@ export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 						<DateFilter />
 						<StatsTypeFilter />
 						<Button asChild>
-							<Link href="/stats/add-stats">
+							<Link href="/add-stats">
 								<Plus />
 								Add Stats
 							</Link>

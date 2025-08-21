@@ -3,7 +3,7 @@
 import { createContext, use, useEffect, useState } from "react";
 import { useQueryState } from "nuqs";
 
-import { filterByDate } from "@/lib/calculations";
+import { filterByDate } from "@/lib/utils";
 import type { DatesData, StatsData } from "@/lib/dal";
 import { type Tables } from "@/lib/supabase/database";
 import type { BattingStats, BowlingStats, FieldingStats } from "@/lib/types";

@@ -1,9 +1,9 @@
 import { type Metadata } from "next";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
-import { ThemeProvider } from "@/lib/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { Footer } from "@/components/footer";
+import { ThemeProvider } from "@/components/theme-provider";
 import { cwc } from "@/app/fonts/cwc";
 
 import "./globals.css";

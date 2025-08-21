@@ -2,38 +2,39 @@
 
 import { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { wicketSchema } from "@/lib/validation";
+import { ballSchema } from "@/lib/validation";
 import { useStats } from "@/context/stats-context";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Switch } from "@/components/ui/switch";
 import { PlayerField } from "@/components/player-field";
 
 import { addWicketAction } from "./action";
 
 export default function AddWicketPage() {
-	const { dates, players } = useStats();
+	const { players } = useStats();
 	const [isPending, startTransition] = useTransition();
 
 	const defaultValues = {
 		batsman: "",
 		bowler: "",
-		date: dates[0].date
+		score: "0",
+		wicket: false
 	};
 
-	const form = useForm<z.infer<typeof wicketSchema>>({
+	const form = useForm<z.infer<typeof ballSchema>>({
 		defaultValues,
 		mode: "onChange",
-		resolver: zodResolver(wicketSchema)
+		resolver: zodResolver(ballSchema)
 	});
 
-	function onSubmit(values: z.infer<typeof wicketSchema>) {
+	function onSubmit(values: z.infer<typeof ballSchema>) {
 		startTransition(async () => {
 			const { error } = await addWicketAction(values);
 			// eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -43,39 +44,13 @@ export default function AddWicketPage() {
 
 	return (
 		<div className="mx-auto w-full max-w-3xl">
-			<h1 className="mb-10 text-center text-2xl/9 font-bold capitalize md:text-left">Add Wicket</h1>
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-5">
-					<FormField
-						name="date"
-						control={form.control}
-						render={({ field }) => (
-							<FormItem className="col-span-2 mb-8 flex flex-col">
-								<FormLabel>Date</FormLabel>
-								<Select onValueChange={field.onChange} defaultValue={field.value} disabled={isPending}>
-									<FormControl>
-										<SelectTrigger className="w-full">
-											<SelectValue placeholder="Select date" />
-										</SelectTrigger>
-									</FormControl>
-									<SelectContent>
-										{dates.map(({ date, title }) => (
-											<SelectItem key={date} value={date}>
-												<span className="font-medium">{title}</span>
-												<span className="text-muted-foreground">({format(date, "PP")})</span>
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
 					<FormField
 						name="batsman"
 						control={form.control}
 						render={({ field }) => (
-							<FormItem className="place-items-center">
+							<FormItem>
 								<FormLabel>Batsman</FormLabel>
 								<PlayerField players={players} value={field.value} onSelect={(value) => form.setValue(field.name, value)}>
 									<FormControl>
@@ -94,7 +69,7 @@ export default function AddWicketPage() {
 						name="bowler"
 						control={form.control}
 						render={({ field }) => (
-							<FormItem className="place-items-center">
+							<FormItem>
 								<FormLabel>Bowler</FormLabel>
 								<PlayerField players={players} value={field.value} onSelect={(value) => form.setValue(field.name, value)}>
 									<FormControl>
@@ -104,6 +79,44 @@ export default function AddWicketPage() {
 										</Avatar>
 									</FormControl>
 								</PlayerField>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						name="score"
+						control={form.control}
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Score</FormLabel>
+								<FormControl>
+									<RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center gap-x-3">
+										<RadioGroupItem value="0" />
+										<RadioGroupItem value="1" />
+										<RadioGroupItem value="2" />
+										<RadioGroupItem value="3" />
+										<RadioGroupItem value="4" />
+										<RadioGroupItem value="5" />
+										<RadioGroupItem value="6" />
+									</RadioGroup>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						name="wicket"
+						control={form.control}
+						render={({ field: { value, onChange } }) => (
+							<FormItem>
+								<FormLabel>Wicket</FormLabel>
+								<div className="flex h-9 items-center">
+									<FormControl>
+										<Switch checked={value} onCheckedChange={onChange} />
+									</FormControl>
+								</div>
 								<FormMessage />
 							</FormItem>
 						)}

@@ -2,9 +2,9 @@
 
 import { z } from "zod";
 
-import { calculateAverage, calculateStrikeRate } from "@/lib/calculations";
 import { type TablesInsert } from "@/lib/supabase/database";
 import { createClient } from "@/lib/supabase/server";
+import { calculateAverage, calculateStrikeRate } from "@/lib/utils";
 import { statsSchema } from "@/lib/validation";
 
 export async function addStatsAction(data: z.infer<typeof statsSchema>) {

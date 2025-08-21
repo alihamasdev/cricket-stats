@@ -1,6 +1,6 @@
-import { calculateBattingStats, calculateBowlingStats, calculateFieldingStats } from "@/lib/calculations";
 import { createClient } from "@/lib/supabase/server";
 import type { AllTimeStats, BattingStats, BowlingStats, FieldingStats } from "@/lib/types";
+import { calculateBattingStats, calculateBowlingStats, calculateFieldingStats } from "@/lib/utils";
 
 export type StatsData = {
 	allTimeStats: AllTimeStats[];

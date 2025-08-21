@@ -43,8 +43,9 @@ export const statsSchema = z
 		path: ["bowlingOvers"]
 	});
 
-export const wicketSchema = z.object({
+export const ballSchema = z.object({
 	batsman: statsFormValue,
 	bowler: statsFormValue,
-	date: statsFormValue
+	score: statsFormValue,
+	wicket: z.boolean().optional()
 });

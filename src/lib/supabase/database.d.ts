@@ -50,7 +50,7 @@ export type Database = {
 					strike_rate: number;
 				};
 				Insert: {
-					average?: number;
+					average: number;
 					balls: number;
 					date: string;
 					ducks: number;
@@ -62,7 +62,7 @@ export type Database = {
 					player: string;
 					runs: number;
 					sixes: number;
-					strike_rate?: number;
+					strike_rate: number;
 				};
 				Update: {
 					average?: number;
@@ -118,7 +118,7 @@ export type Database = {
 					matches: number;
 					no_balls: number;
 					overs: number;
-					player?: string;
+					player: string;
 					runs: number;
 					wickets: number;
 					wides: number;
@@ -156,17 +156,14 @@ export type Database = {
 			dates: {
 				Row: {
 					date: string;
-					matches: number;
 					title: string;
 				};
 				Insert: {
 					date: string;
-					matches: number;
 					title: string;
 				};
 				Update: {
 					date?: string;
-					matches?: number;
 					title?: string;
 				};
 				Relationships: [];
@@ -186,7 +183,7 @@ export type Database = {
 					date: string;
 					id?: number;
 					matches: number;
-					player?: string;
+					player: string;
 					run_outs: number;
 					stumpings: number;
 				};
@@ -228,46 +225,42 @@ export type Database = {
 				};
 				Relationships: [];
 			};
-			wickets: {
+			stats: {
 				Row: {
 					batsman: string;
 					bowler: string;
-					date: string;
 					id: number;
+					score: number;
+					wicket: boolean;
 				};
 				Insert: {
 					batsman: string;
 					bowler: string;
-					date: string;
 					id?: number;
+					score: number;
+					wicket?: boolean;
 				};
 				Update: {
 					batsman?: string;
 					bowler?: string;
-					date?: string;
 					id?: number;
+					score?: number;
+					wicket?: boolean;
 				};
 				Relationships: [
 					{
-						foreignKeyName: "wickets_batsman_fkey";
+						foreignKeyName: "stats_batsman_fkey";
 						columns: ["batsman"];
 						isOneToOne: false;
 						referencedRelation: "players";
 						referencedColumns: ["name"];
 					},
 					{
-						foreignKeyName: "wickets_bowler_fkey";
+						foreignKeyName: "stats_bowler_fkey";
 						columns: ["bowler"];
 						isOneToOne: false;
 						referencedRelation: "players";
 						referencedColumns: ["name"];
-					},
-					{
-						foreignKeyName: "wickets_date_fkey";
-						columns: ["date"];
-						isOneToOne: false;
-						referencedRelation: "dates";
-						referencedColumns: ["date"];
 					}
 				];
 			};

@@ -25,11 +25,11 @@ export default function AddStatsPage() {
 	const [isPending, startTransition] = useTransition();
 
 	const defaultValues = {
-		name: "",
+		name: "hamas",
 		date: dates[0].date,
-		matches: dates[0].matches.toString(),
-		batting: { innings: "", runs: "", balls: "", fours: "", sixes: "", ducks: "", not_outs: "" },
-		bowling: { innings: "", dots: "", no_balls: "0", overs: "", runs: "", wickets: "", wides: "" },
+		matches: "0",
+		batting: { innings: "0", runs: "0", balls: "0", fours: "0", sixes: "0", ducks: "0", not_outs: "0" },
+		bowling: { innings: "0", dots: "0", no_balls: "0", overs: "0", runs: "0", wickets: "0", wides: "0" },
 		fielding: { catches: "0", run_outs: "0", stumpings: "0" }
 	};
 
