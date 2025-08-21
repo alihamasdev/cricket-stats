@@ -37,8 +37,13 @@ export default function AddWicketPage() {
 	function onSubmit(values: z.infer<typeof ballSchema>) {
 		startTransition(async () => {
 			const { error } = await addWicketAction(values);
-			// eslint-disable-next-line @typescript-eslint/no-unused-expressions
-			error ? toast.error(error) : form.reset(defaultValues);
+			if (error) {
+				toast.error(error);
+			} else {
+				form.setValue("wicket", false);
+				form.setValue("score", "0");
+				toast.success("Ball added successfully");
+			}
 		});
 	}
 
@@ -91,7 +96,12 @@ export default function AddWicketPage() {
 							<FormItem>
 								<FormLabel>Score</FormLabel>
 								<FormControl>
-									<RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center gap-x-3">
+									<RadioGroup
+										value={field.value}
+										defaultValue={field.value}
+										onValueChange={field.onChange}
+										className="flex items-center gap-x-3"
+									>
 										<RadioGroupItem value="0" />
 										<RadioGroupItem value="1" />
 										<RadioGroupItem value="2" />
