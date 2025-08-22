@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -12,20 +13,22 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { PlayerField } from "@/components/player-field";
 
 import { addWicketAction } from "./action";
 
 export default function AddWicketPage() {
-	const { players } = useStats();
+	const { players, dates } = useStats();
 	const [isPending, startTransition] = useTransition();
 
 	const defaultValues = {
 		batsman: "",
 		bowler: "",
 		score: "0",
-		wicket: false
+		wicket: false,
+		dates: dates[0].date
 	};
 
 	const form = useForm<z.infer<typeof ballSchema>>({
@@ -52,7 +55,7 @@ export default function AddWicketPage() {
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-5">
 					<FormField
-						name="batsman"
+						name="batter"
 						control={form.control}
 						render={({ field }) => (
 							<FormItem>
@@ -117,16 +120,40 @@ export default function AddWicketPage() {
 					/>
 
 					<FormField
+						name="date"
+						control={form.control}
+						render={({ field }) => (
+							<FormItem className="flex flex-col justify-end">
+								<FormLabel>Date</FormLabel>
+								<Select onValueChange={field.onChange} defaultValue={field.value} disabled={isPending}>
+									<FormControl>
+										<SelectTrigger className="w-full">
+											<SelectValue placeholder="Select date" />
+										</SelectTrigger>
+									</FormControl>
+									<SelectContent>
+										{dates.map(({ date, title }) => (
+											<SelectItem key={date} value={date}>
+												<span className="font-medium">{title}</span>
+												<span className="text-muted-foreground">({format(date, "PP")})</span>
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<FormField
 						name="wicket"
 						control={form.control}
 						render={({ field: { value, onChange } }) => (
 							<FormItem>
 								<FormLabel>Wicket</FormLabel>
-								<div className="flex h-9 items-center">
-									<FormControl>
-										<Switch checked={value} onCheckedChange={onChange} />
-									</FormControl>
-								</div>
+								<FormControl>
+									<Switch checked={value} onCheckedChange={onChange} />
+								</FormControl>
 								<FormMessage />
 							</FormItem>
 						)}

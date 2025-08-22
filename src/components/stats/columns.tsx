@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { Column, ColumnDef } from "@tanstack/react-table";
 
 import type { BattingStats, BowlingStats, FieldingStats } from "@/lib/types";
@@ -15,13 +16,13 @@ function ColumnHeader<T>({ column, title }: { column: Column<T>; title: React.Re
 
 function PlayerAvatarName({ name }: { name: string }) {
 	return (
-		<div className="flex items-center gap-x-2">
+		<Link href={`/${name}`} className="flex items-center gap-x-2" prefetch={false}>
 			<Avatar className="size-6 md:size-8">
 				<AvatarImage src={`/players/${name}.png`} />
 				<AvatarFallback />
 			</Avatar>
 			<p className="font-medium capitalize">{name}</p>
-		</div>
+		</Link>
 	);
 }
 

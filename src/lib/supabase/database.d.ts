@@ -227,30 +227,33 @@ export type Database = {
 			};
 			stats: {
 				Row: {
-					batsman: string;
+					batter: string;
 					bowler: string;
+					date: string;
 					id: number;
 					score: number;
 					wicket: boolean;
 				};
 				Insert: {
-					batsman: string;
+					batter: string;
 					bowler: string;
+					date: string;
 					id?: number;
 					score: number;
 					wicket?: boolean;
 				};
 				Update: {
-					batsman?: string;
+					batter?: string;
 					bowler?: string;
+					date?: string;
 					id?: number;
 					score?: number;
 					wicket?: boolean;
 				};
 				Relationships: [
 					{
-						foreignKeyName: "stats_batsman_fkey";
-						columns: ["batsman"];
+						foreignKeyName: "stats_batter_fkey";
+						columns: ["batter"];
 						isOneToOne: false;
 						referencedRelation: "players";
 						referencedColumns: ["name"];
@@ -261,6 +264,13 @@ export type Database = {
 						isOneToOne: false;
 						referencedRelation: "players";
 						referencedColumns: ["name"];
+					},
+					{
+						foreignKeyName: "stats_date_fkey";
+						columns: ["date"];
+						isOneToOne: false;
+						referencedRelation: "dates";
+						referencedColumns: ["date"];
 					}
 				];
 			};

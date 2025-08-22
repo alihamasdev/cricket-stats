@@ -44,8 +44,9 @@ export const statsSchema = z
 	});
 
 export const ballSchema = z.object({
-	batsman: statsFormValue,
+	batter: statsFormValue,
 	bowler: statsFormValue,
 	score: statsFormValue,
-	wicket: z.boolean().optional()
+	wicket: z.boolean().optional(),
+	date: statsFormValue
 });

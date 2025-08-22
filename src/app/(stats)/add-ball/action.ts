@@ -10,9 +10,9 @@ export async function addWicketAction(data: z.infer<typeof ballSchema>) {
 	const { success } = ballSchema.safeParse(data);
 	if (!success) return { error: "Please provide valid data" };
 
-	const { batsman, bowler, score, wicket } = data;
+	const { batter, bowler, score, wicket, date } = data;
 
-	const { error } = await supabase.from("stats").insert({ batsman, bowler, score: Number(score), wicket });
+	const { error } = await supabase.from("stats").insert({ batter, bowler, wicket, date, score: Number(score) });
 
 	return { error: error ? error.message : null };
 }

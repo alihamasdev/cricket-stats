@@ -2,15 +2,15 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
+import { flexRender, getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
 import { Plus } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DataTable } from "@/components/ui/data-table";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DateFilter } from "@/components/stats/date-filter";
 import { StatsTypeFilter } from "@/components/stats/stats-type-filter";
 
@@ -28,26 +28,24 @@ export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 
 	return (
 		<div className="mb-auto w-full space-y-6">
-			<div className="flex w-full flex-col items-center justify-between gap-y-4 md:flex-row md:gap-x-4">
-				<h1 className="text-center text-2xl/9 font-bold capitalize md:text-left" onDoubleClick={() => setShow((prev) => !prev)}>
+			<div className="flex w-full items-center justify-between gap-x-4">
+				<h1 className="text-left text-2xl/9 font-bold capitalize" onDoubleClick={() => setShow((prev) => !prev)}>
 					Ghurki Cricket Stats
 				</h1>
-				<div className="flex w-full flex-col gap-4 md:w-auto md:flex-row">
+				<div className="flex w-full gap-x-4 md:w-auto">
 					<Input
+						className="min-w-sm"
 						placeholder="Search players"
-						className="lg:min-w-sm"
 						value={(table.getColumn("player")?.getFilterValue() as string) ?? ""}
 						onChange={(event) => table.getColumn("player")?.setFilterValue(event.target.value)}
 					/>
 					<div className="flex w-full items-center justify-between gap-x-4 md:w-auto">
 						<DateFilter />
 						<StatsTypeFilter />
-						<Button asChild>
-							<Link href="/add-stats">
-								<Plus />
-								Add Stats
-							</Link>
-						</Button>
+						<Link href="/add-stats" className={buttonVariants()}>
+							<Plus />
+							Add Stats
+						</Link>
 					</div>
 				</div>
 			</div>
@@ -59,23 +57,53 @@ export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 							<DateFilter size="sm" />
 						</div>
 					)}
-					<DataTable table={table} />
+					<div className="overflow-hidden rounded-lg border">
+						<Table>
+							<TableHeader>
+								{table.getHeaderGroups().map((headerGroup) => (
+									<TableRow key={headerGroup.id}>
+										{headerGroup.headers.map((header) => {
+											return (
+												<TableHead key={header.id} className="text-center not-last:border-r first:min-w-35 first:text-left">
+													{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+												</TableHead>
+											);
+										})}
+									</TableRow>
+								))}
+							</TableHeader>
+							<TableBody>
+								{table.getRowModel().rows?.length ? (
+									table.getRowModel().rows.map((row) => (
+										<TableRow key={row.id}>
+											{row.getVisibleCells().map((cell) => (
+												<TableCell key={cell.id} className="text-center not-last:border-r first:min-w-35 first:text-left">
+													{flexRender(cell.column.columnDef.cell, cell.getContext())}
+												</TableCell>
+											))}
+										</TableRow>
+									))
+								) : (
+									<TableRow>
+										<TableCell colSpan={table.getAllColumns().length} className="h-24 text-center">
+											No results.
+										</TableCell>
+									</TableRow>
+								)}
+							</TableBody>
+						</Table>
+					</div>
 				</ResizablePanel>
 				<ResizableHandle />
 				<ResizablePanel defaultSize={0}>
 					<div className="flex w-50 flex-col gap-y-3 rounded-xl border p-4 pt-2" hidden={show}>
 						<h2 className="text-xl font-semibold">Columns</h2>
-						{table
-							.getAllColumns()
-							.filter((column) => column.getCanHide())
-							.map((column) => {
-								return (
-									<Label key={column.id} className="capitalize">
-										<Checkbox checked={column.getIsVisible()} onCheckedChange={(value) => column.toggleVisibility(!!value)} />
-										{column.id.split("_").join(" ")}
-									</Label>
-								);
-							})}
+						{table.getAllColumns().map((column) => (
+							<Label key={column.id} className="capitalize">
+								<Checkbox checked={column.getIsVisible()} onCheckedChange={(value) => column.toggleVisibility(!!value)} />
+								{column.id.split("_").join(" ")}
+							</Label>
+						))}
 					</div>
 				</ResizablePanel>
 			</ResizablePanelGroup>
