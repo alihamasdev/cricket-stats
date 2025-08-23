@@ -10,21 +10,17 @@ export function Footer() {
 	return (
 		<footer className="w-full border-t px-4 py-4">
 			<div className="container mx-auto flex items-center justify-between">
-				<p className="text-muted-foreground text-sm">
-					&#169; 2025{" "}
-					<a href="https://alihamas.vercel.app" target="_blank" className="hover:underline">
-						Ali Hamas
-					</a>
-					, Inc.
-				</p>
-				<div className="text-muted-foreground flex items-center gap-x-4 text-sm *:hover:underline">
+				<div className="text-muted-foreground flex items-center gap-4 text-sm font-medium *:hover:underline">
 					<Link href="/" prefetch={false}>
 						Stats
 					</Link>
-					<Link href="/add-ball" prefetch={false}>
+					<Link href="/add-ball" className="hidden md:inline" prefetch={false}>
 						Add Ball
 					</Link>
-					<Link href="/scorecard" prefetch={false}>
+					<Link href="/compare" prefetch={false}>
+						Compare
+					</Link>
+					<Link href="/scorecard" className="hidden md:inline" prefetch={false}>
 						Scorecard
 					</Link>
 				</div>
