@@ -2,6 +2,7 @@
 
 import { useId } from "react";
 
+import { players as playerList } from "@/data/data.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -33,11 +34,16 @@ export function SliderLabel({ label, ...props }: React.ComponentProps<typeof Sli
 	);
 }
 
-export function PlayerNameField({ value, players, ...props }: React.ComponentProps<typeof PlayerField>) {
+export function PlayerNameField({
+	label = "Name",
+	value,
+	players = playerList,
+	...props
+}: React.ComponentProps<typeof PlayerField> & { label?: string }) {
 	const id = useId();
 	return (
 		<div className="space-y-2">
-			<Label htmlFor={id}>Name</Label>
+			<Label htmlFor={id}>{label}</Label>
 			<PlayerField value={value} players={players} {...props}>
 				<Button id={id} variant="outline" className="w-full justify-between font-normal capitalize">
 					{value ? players?.find((player) => player === value) : ""}

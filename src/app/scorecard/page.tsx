@@ -6,15 +6,15 @@ import { RefreshCcw, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { InputLabel, SliderLabel } from "@/components/scorecard/label-fields";
+import { InputLabel, SliderLabel } from "@/components/label-fields";
 import { TeamForm } from "@/components/scorecard/team-form";
 import { TeamPlayersCard } from "@/components/scorecard/team-players-card";
 import { TeamStats } from "@/components/scorecard/team-stats";
-import type { CanvasSetting, MatchInfo, Team } from "@/components/scorecard/types";
+import { type Team } from "@/components/scorecard/types";
 
 export default function Page() {
-	const [matchInfo, setMatchInfo] = useState<MatchInfo>({ title: "Match 01", result: "Match result" });
-	const [canvasSetting, setCanvasSetting] = useState<CanvasSetting>({ padding: 175, backgroundOpacity: 0.3 });
+	const [count, setCount] = useState({ batters: 4, bowlers: 4 });
+	const [matchInfo, setMatchInfo] = useState({ title: "Match 01", result: "Match result" });
 
 	const [team1, setTeam1] = useState<Team>({
 		name: "Team 1",
@@ -42,26 +42,26 @@ export default function Page() {
 		<Fragment>
 			<h1 className="w-full text-left text-2xl font-bold capitalize">Match Scorecard</h1>
 			<section
-				className="relative flex aspect-video size-full items-center justify-center rounded bg-center bg-no-repeat object-cover"
-				style={{ backgroundImage: "url(/lords.png)", paddingInline: canvasSetting.padding }}
+				style={{ backgroundImage: "url(/lords.png)" }}
+				className="relative flex aspect-video w-full items-center justify-center rounded bg-center bg-no-repeat object-cover py-25"
 			>
-				<div className="relative z-1 grid aspect-video w-full grid-cols-2 grid-rows-[44px_60px_1fr_60px] gap-3">
-					<div className="bg-gradient-end col-span-2 mx-auto w-fit rounded-full px-8 text-white">
+				<div className="relative z-1 grid grid-cols-2 gap-3" style={{ width: 1000 }}>
+					<div className="bg-gradient-end col-span-2 mx-auto h-11 w-fit rounded-full px-8 text-white">
 						<span className="text-lg/11 font-bold uppercase">{matchInfo.title}</span>
 					</div>
-					<div className="text-gradient-end rounded-full bg-white text-center">
+					<div className="text-gradient-end h-15 rounded-full bg-white text-center">
 						<span className="text-2xl/15 font-bold uppercase">{team1.name}</span>
 					</div>
-					<div className="text-gradient-end rounded-full bg-white text-center">
+					<div className="text-gradient-end h-15 rounded-full bg-white text-center">
 						<span className="text-2xl/15 font-bold uppercase">{team2.name}</span>
 					</div>
-					<TeamStats team1={team1} team2={team2} className="ml-10" />
-					<TeamStats team1={team2} team2={team1} className="mr-10" />
-					<div className="text-gradient-end col-span-2 w-full rounded-full bg-white text-center">
+					<TeamStats team1={team1} team2={team2} className="ml-10" count={count} />
+					<TeamStats team1={team2} team2={team1} className="mr-10" count={count} />
+					<div className="text-gradient-end col-span-2 h-15 w-full rounded-full bg-white text-center">
 						<span className="text-2xl/15 font-bold uppercase">{matchInfo.result}</span>
 					</div>
 				</div>
-				<div className="absolute inset-0 z-0 bg-black" style={{ opacity: canvasSetting.backgroundOpacity }} />
+				<div className="absolute inset-0 z-0 bg-black/30" />
 			</section>
 
 			<div className="my-5 flex items-center justify-center gap-x-4">
@@ -78,8 +78,8 @@ export default function Page() {
 				<Button
 					variant="destructive"
 					onClick={() => {
-						setTeam1((prevState) => ({ ...prevState, score: "", wickets: "", batters: [], bowlers: [] }));
-						setTeam2((prevState) => ({ ...prevState, score: "", wickets: "", batters: [], bowlers: [] }));
+						setTeam1((prevState) => ({ ...prevState, score: "", wickets: "", allOut: false, batters: [], bowlers: [] }));
+						setTeam2((prevState) => ({ ...prevState, score: "", wickets: "", allOut: false, batters: [], bowlers: [] }));
 					}}
 				>
 					<X />
@@ -112,20 +112,18 @@ export default function Page() {
 					</CardHeader>
 					<CardContent className="space-y-4">
 						<SliderLabel
-							label="Padding"
-							min={20}
-							max={500}
-							step={5}
-							value={[canvasSetting.padding]}
-							onValueChange={(value) => setCanvasSetting((prev) => ({ ...prev, padding: value[0] }))}
+							label="Batters"
+							min={1}
+							max={11}
+							value={[count.batters]}
+							onValueChange={(value) => setCount((prev) => ({ ...prev, batters: value[0] }))}
 						/>
 						<SliderLabel
-							label="Background Opacity"
-							min={0}
-							max={1}
-							step={0.01}
-							value={[canvasSetting.backgroundOpacity]}
-							onValueChange={(value) => setCanvasSetting((prev) => ({ ...prev, backgroundOpacity: value[0] }))}
+							label="Bowlers"
+							min={1}
+							max={11}
+							value={[count.bowlers]}
+							onValueChange={(value) => setCount((prev) => ({ ...prev, bowlers: value[0] }))}
 						/>
 					</CardContent>
 				</Card>

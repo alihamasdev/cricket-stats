@@ -5,41 +5,38 @@ import { type Team } from "@/components/scorecard/types";
 interface TeamStatsProps extends React.ComponentProps<"div"> {
 	team1: Team;
 	team2: Team;
+	count: { batters: number; bowlers: number };
 }
 
-export function TeamStats({ team1, team2, className, ...props }: TeamStatsProps) {
+export function TeamStats({ team1, team2, count, className, style, ...props }: TeamStatsProps) {
 	const team1Color = "#D2D628";
 	const team2Color = "#80B2D0";
 
 	return (
-		<div className={cn("grid h-full grid-rows-2 overflow-hidden rounded-lg bg-white", className)} {...props}>
-			<div className="overflow-hidden text-black">
+		<div className={cn("overflow-hidden rounded-xl bg-white text-base/9", className)} {...props}>
+			<div className="overflow-hidden text-black" style={{ height: `${43 + count.batters * 36}px` }}>
 				<StatsHeader icon="bat" backgroundColor={team1Color} title={team1.allOut ? team1.score : `${team1.score}-${team1.wickets}`} />
-				<div className="grid">
-					{team1.batters.map(({ name, balls, runs, out }, idx) => (
-						<div key={`${name}-${idx}`} className="grid min-h-8 grid-cols-[1fr_60px_60px] border-b border-black/50">
-							<p className="text-gradient-end border-r border-black/50 px-2 py-1 text-left font-medium uppercase">{name}</p>
-							<p className="text-gradient-end grid place-items-center border-r border-black/50 text-left font-bold">
-								{runs}
-								{!out && "*"}
-							</p>
-							<p className="text-gradient-end/80 grid place-items-center text-left">{balls}</p>
-						</div>
-					))}
-				</div>
+				{team1.batters.map(({ name, balls, runs, out }, idx) => (
+					<div key={idx} className="grid h-9 grid-cols-[1fr_60px_60px] divide-x divide-black/50 border-b border-black/50">
+						<p className="text-gradient-end pl-3 text-left font-medium uppercase">{name}</p>
+						<p className="text-gradient-end text-center font-bold">
+							{runs}
+							{!out && "*"}
+						</p>
+						<p className="text-gradient-end/80 text-center">{balls}</p>
+					</div>
+				))}
 			</div>
 
-			<div className="overflow-hidden text-black">
+			<div className="overflow-hidden text-black" style={{ height: `${43 + count.bowlers * 36}px` }}>
 				<StatsHeader icon="ball" title={team1.overs} backgroundColor={team2Color} />
-				<div className="grid">
-					{team2.bowlers.map(({ name, wickets, runs, overs }, idx) => (
-						<div key={`${name}-${idx}`} className="grid min-h-8 grid-cols-[1fr_60px_50px] border-b border-black/50">
-							<p className="text-gradient-end border-r border-black/50 px-2 py-1 text-left font-medium uppercase">{name}</p>
-							<p className="text-gradient-end grid place-items-center border-r border-black/50 text-right font-bold">{`${wickets}-${runs}`}</p>
-							<p className="text-gradient-end/80 grid place-items-center text-right">{overs}</p>
-						</div>
-					))}
-				</div>
+				{team2.bowlers.map(({ name, wickets, runs, overs }, idx) => (
+					<div key={idx} className="grid h-9 grid-cols-[1fr_60px_60px] divide-x divide-black/50 border-b border-black/50">
+						<p className="text-gradient-end pl-3 text-left font-medium uppercase">{name}</p>
+						<p className="text-gradient-end text-center font-bold">{`${wickets}-${runs}`}</p>
+						<p className="text-gradient-end/80 text-center">{overs}</p>
+					</div>
+				))}
 			</div>
 		</div>
 	);
@@ -47,11 +44,11 @@ export function TeamStats({ team1, team2, className, ...props }: TeamStatsProps)
 
 function StatsHeader({ backgroundColor, title, icon }: { backgroundColor: string; title: string; icon: "bat" | "ball" }) {
 	return (
-		<div className="from-gradient-start to-gradient-end relative ml-5 flex h-10 items-center bg-linear-to-r">
-			<Avatar className="absolute top-1/2 -left-5 size-10 -translate-y-1/2 border-2 border-white p-2" style={{ backgroundColor }}>
+		<div className="from-gradient-start to-gradient-end relative ml-5 h-11 w-full items-center bg-linear-to-r">
+			<Avatar className="absolute top-1/2 -left-5 size-11 -translate-y-1/2 border-3 border-white p-2" style={{ backgroundColor }}>
 				<AvatarImage src={`${icon}.svg`} />
 			</Avatar>
-			<p className="w-full text-center text-2xl font-bold text-white">{title}</p>
+			<p className="w-full text-center text-2xl/11 font-bold text-white">{title}</p>
 		</div>
 	);
 }

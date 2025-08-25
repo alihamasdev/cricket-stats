@@ -4,7 +4,7 @@ import { toast } from "sonner";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TagsInput, TagsInputInput, TagsInputItem, TagsInputLabel, TagsInputList } from "@/components/ui/tags-input";
-import { InputLabel } from "@/components/scorecard/label-fields";
+import { InputLabel } from "@/components/label-fields";
 import type { Team } from "@/components/scorecard/types";
 
 interface TeamPlayersCardProps {
