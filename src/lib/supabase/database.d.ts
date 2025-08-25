@@ -81,13 +81,6 @@ export type Database = {
 				};
 				Relationships: [
 					{
-						foreignKeyName: "batting_date_fkey";
-						columns: ["date"];
-						isOneToOne: false;
-						referencedRelation: "dates";
-						referencedColumns: ["date"];
-					},
-					{
 						foreignKeyName: "batting_player_fkey";
 						columns: ["player"];
 						isOneToOne: false;
@@ -138,13 +131,6 @@ export type Database = {
 				};
 				Relationships: [
 					{
-						foreignKeyName: "bowling_date_fkey";
-						columns: ["date"];
-						isOneToOne: false;
-						referencedRelation: "dates";
-						referencedColumns: ["date"];
-					},
-					{
 						foreignKeyName: "bowling_player_fkey";
 						columns: ["player"];
 						isOneToOne: false;
@@ -152,21 +138,6 @@ export type Database = {
 						referencedColumns: ["name"];
 					}
 				];
-			};
-			dates: {
-				Row: {
-					date: string;
-					title: string;
-				};
-				Insert: {
-					date: string;
-					title: string;
-				};
-				Update: {
-					date?: string;
-					title?: string;
-				};
-				Relationships: [];
 			};
 			fielding: {
 				Row: {
@@ -198,13 +169,6 @@ export type Database = {
 				};
 				Relationships: [
 					{
-						foreignKeyName: "fielding_date_fkey";
-						columns: ["date"];
-						isOneToOne: false;
-						referencedRelation: "dates";
-						referencedColumns: ["date"];
-					},
-					{
 						foreignKeyName: "fielding_player_fkey";
 						columns: ["player"];
 						isOneToOne: false;
@@ -224,55 +188,6 @@ export type Database = {
 					name?: string;
 				};
 				Relationships: [];
-			};
-			stats: {
-				Row: {
-					batter: string;
-					bowler: string;
-					date: string;
-					id: number;
-					score: number;
-					wicket: boolean;
-				};
-				Insert: {
-					batter: string;
-					bowler: string;
-					date: string;
-					id?: number;
-					score: number;
-					wicket?: boolean;
-				};
-				Update: {
-					batter?: string;
-					bowler?: string;
-					date?: string;
-					id?: number;
-					score?: number;
-					wicket?: boolean;
-				};
-				Relationships: [
-					{
-						foreignKeyName: "stats_batter_fkey";
-						columns: ["batter"];
-						isOneToOne: false;
-						referencedRelation: "players";
-						referencedColumns: ["name"];
-					},
-					{
-						foreignKeyName: "stats_bowler_fkey";
-						columns: ["bowler"];
-						isOneToOne: false;
-						referencedRelation: "players";
-						referencedColumns: ["name"];
-					},
-					{
-						foreignKeyName: "stats_date_fkey";
-						columns: ["date"];
-						isOneToOne: false;
-						referencedRelation: "dates";
-						referencedColumns: ["date"];
-					}
-				];
 			};
 		};
 		Views: {

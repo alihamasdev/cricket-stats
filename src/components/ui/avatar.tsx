@@ -28,4 +28,13 @@ function AvatarFallback({ className, ...props }: React.ComponentProps<typeof Ava
 	);
 }
 
-export { Avatar, AvatarImage, AvatarFallback };
+function PlayerAvatar({ name, ...props }: React.ComponentProps<typeof Avatar> & { name: string }) {
+	return (
+		<Avatar {...props}>
+			<AvatarImage src={`/players/${name}.png`} />
+			<AvatarFallback />
+		</Avatar>
+	);
+}
+
+export { Avatar, AvatarImage, AvatarFallback, PlayerAvatar };

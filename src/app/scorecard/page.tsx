@@ -40,7 +40,7 @@ export default function Page() {
 
 	return (
 		<Fragment>
-			<h1 className="mb-5 w-full text-left text-2xl/9 font-bold capitalize">Match Scorecard</h1>
+			<h1 className="w-full text-left text-2xl font-bold capitalize">Match Scorecard</h1>
 			<section
 				className="relative flex aspect-video size-full items-center justify-center rounded bg-center bg-no-repeat object-cover"
 				style={{ backgroundImage: "url(/lords.png)", paddingInline: canvasSetting.padding }}

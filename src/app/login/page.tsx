@@ -3,6 +3,7 @@
 import { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -28,7 +29,9 @@ export default function LoginPage() {
 	function onSubmit(values: z.infer<typeof loginSchema>) {
 		startTransition(async () => {
 			const { error } = await loginAction(values);
-			form.setError("email", { message: error });
+			if (error) {
+				toast.error(error);
+			}
 		});
 	}
 

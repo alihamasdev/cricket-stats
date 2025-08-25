@@ -1,21 +1,21 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { flexRender, getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
-import { Plus } from "lucide-react";
+import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
 
-import { buttonVariants } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { DateFilter } from "@/components/stats/date-filter";
-import { StatsTypeFilter } from "@/components/stats/stats-type-filter";
+import { DataTable } from "@/components/data-table";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
+interface StatsTableProps<T> {
+	data: T[];
+	columns: ColumnDef<T>[];
+	title?: string;
+	children?: React.ReactNode;
+}
+
+export function StatsTable<T>({ data, columns, title = "Ghurki Cricket Stats", children }: StatsTableProps<T>) {
 	const table = useReactTable({
 		data,
 		columns,
@@ -24,82 +24,30 @@ export function StatsTable<T>({ data, columns }: { data: T[]; columns: any }) {
 		getFilteredRowModel: getFilteredRowModel()
 	});
 
-	const [show, setShow] = useState(false);
-
 	return (
 		<div className="mb-auto w-full space-y-6">
-			<div className="flex w-full items-center justify-between gap-x-4">
-				<h1 className="text-left text-2xl/9 font-bold capitalize" onDoubleClick={() => setShow((prev) => !prev)}>
-					Ghurki Cricket Stats
-				</h1>
-				<div className="flex w-full gap-x-4 md:w-auto">
+			<div className="flex w-full flex-col items-center justify-between gap-4 md:flex-row">
+				<h1 className="text-left text-2xl/9 font-bold capitalize">{title}</h1>
+				<div className="flex w-full flex-col gap-4 md:w-auto md:flex-row">
 					<Input
-						className="min-w-sm"
-						placeholder="Search players"
+						className="w-full md:min-w-sm"
+						placeholder="Search player"
 						value={(table.getColumn("player")?.getFilterValue() as string) ?? ""}
 						onChange={(event) => table.getColumn("player")?.setFilterValue(event.target.value)}
 					/>
-					<div className="flex w-full items-center justify-between gap-x-4 md:w-auto">
-						<DateFilter />
-						<StatsTypeFilter />
-						<Link href="/add-stats" className={buttonVariants()}>
-							<Plus />
-							Add Stats
-						</Link>
-					</div>
+					{children}
 				</div>
 			</div>
 			<ResizablePanelGroup direction="horizontal">
-				<ResizablePanel defaultSize={100} minSize={50} className={show ? "space-y-2 p-2" : ""}>
-					{show && (
-						<div className="flex items-center justify-between">
-							<input className="w-full text-left text-xl/8 font-bold capitalize" defaultValue="Stats" />
-							<DateFilter size="sm" />
-						</div>
-					)}
-					<div className="overflow-hidden rounded-lg border">
-						<Table>
-							<TableHeader>
-								{table.getHeaderGroups().map((headerGroup) => (
-									<TableRow key={headerGroup.id}>
-										{headerGroup.headers.map((header) => {
-											return (
-												<TableHead key={header.id} className="text-center not-last:border-r first:min-w-35 first:text-left">
-													{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-												</TableHead>
-											);
-										})}
-									</TableRow>
-								))}
-							</TableHeader>
-							<TableBody>
-								{table.getRowModel().rows?.length ? (
-									table.getRowModel().rows.map((row) => (
-										<TableRow key={row.id}>
-											{row.getVisibleCells().map((cell) => (
-												<TableCell key={cell.id} className="text-center not-last:border-r first:min-w-35 first:text-left">
-													{flexRender(cell.column.columnDef.cell, cell.getContext())}
-												</TableCell>
-											))}
-										</TableRow>
-									))
-								) : (
-									<TableRow>
-										<TableCell colSpan={table.getAllColumns().length} className="h-24 text-center">
-											No results.
-										</TableCell>
-									</TableRow>
-								)}
-							</TableBody>
-						</Table>
-					</div>
+				<ResizablePanel defaultSize={100} minSize={50}>
+					<DataTable table={table} />
 				</ResizablePanel>
 				<ResizableHandle />
 				<ResizablePanel defaultSize={0}>
-					<div className="flex w-50 flex-col gap-y-3 rounded-xl border p-4 pt-2" hidden={show}>
+					<div className="flex w-50 flex-col gap-y-3 rounded-xl border p-4 pt-2">
 						<h2 className="text-xl font-semibold">Columns</h2>
-						{table.getAllColumns().map((column) => (
-							<Label key={column.id} className="capitalize">
+						{table.getAllColumns().map((column, index) => (
+							<Label key={column.id + index} className="capitalize">
 								<Checkbox checked={column.getIsVisible()} onCheckedChange={(value) => column.toggleVisibility(!!value)} />
 								{column.id.split("_").join(" ")}
 							</Label>

@@ -10,7 +10,6 @@ import { PlayerField } from "@/components/player-field";
 
 export function InputLabel({ label, ...props }: React.ComponentProps<typeof Input> & { label: string }) {
 	const id = useId();
-
 	return (
 		<div className="space-y-2">
 			<Label htmlFor={id}>{label}</Label>
@@ -21,7 +20,6 @@ export function InputLabel({ label, ...props }: React.ComponentProps<typeof Inpu
 
 export function SliderLabel({ label, ...props }: React.ComponentProps<typeof Slider> & { label: string }) {
 	const id = useId();
-
 	return (
 		<div className="space-y-2">
 			<Label htmlFor={id}>{label}</Label>
@@ -36,12 +34,13 @@ export function SliderLabel({ label, ...props }: React.ComponentProps<typeof Sli
 }
 
 export function PlayerNameField({ value, players, ...props }: React.ComponentProps<typeof PlayerField>) {
+	const id = useId();
 	return (
 		<div className="space-y-2">
-			<Label>Name</Label>
+			<Label htmlFor={id}>Name</Label>
 			<PlayerField value={value} players={players} {...props}>
-				<Button variant="outline" className="w-full justify-between font-normal capitalize">
-					{value ? players.find((player) => player === value) : ""}
+				<Button id={id} variant="outline" className="w-full justify-between font-normal capitalize">
+					{value ? players?.find((player) => player === value) : ""}
 				</Button>
 			</PlayerField>
 		</div>

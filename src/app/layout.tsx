@@ -9,7 +9,7 @@ import { cwc } from "@/app/fonts/cwc";
 import "./globals.css";
 
 export const metadata: Metadata = {
-	title: "Cricket Stats | Ali Hamas"
+	title: "Ghurki Cricket Stats | Ali Hamas"
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html lang="en" suppressHydrationWarning>
 			<body className="antialiased" style={cwc.style}>
 				<ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
-					<main className="container mx-auto flex min-h-[calc(100dvh-61px)] w-full flex-col items-center justify-center px-4 py-7">
+					<main className="container mx-auto flex min-h-[calc(100dvh-61px)] w-full flex-col items-center justify-center gap-y-5 px-2 py-7">
 						<NuqsAdapter>{children}</NuqsAdapter>
 					</main>
 					<Footer />
