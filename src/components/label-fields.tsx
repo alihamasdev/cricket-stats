@@ -1,11 +1,13 @@
 "use client";
 
 import { useId } from "react";
+import { format } from "date-fns";
 
-import { players as playerList } from "@/data/data.json";
+import { dates, players as playerList } from "@/data/data.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { PlayerField } from "@/components/player-field";
 
@@ -49,6 +51,29 @@ export function PlayerNameField({
 					{value ? players?.find((player) => player === value) : ""}
 				</Button>
 			</PlayerField>
+		</div>
+	);
+}
+
+export function DateSelectField({ label = "Date", children, ...props }: React.ComponentProps<typeof Select> & { label?: string }) {
+	const id = useId();
+	return (
+		<div className="space-y-2">
+			<Label htmlFor={id}>{label}</Label>
+			<Select {...props}>
+				<SelectTrigger className="w-full">
+					<SelectValue placeholder="Select date" />
+				</SelectTrigger>
+				<SelectContent>
+					{children}
+					{dates.map(({ date, title }) => (
+						<SelectItem key={date} value={date}>
+							<span className="font-medium">{title}</span>
+							<span className="text-muted-foreground">({format(date, "PP")})</span>
+						</SelectItem>
+					))}
+				</SelectContent>
+			</Select>
 		</div>
 	);
 }

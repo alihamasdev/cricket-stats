@@ -13,6 +13,9 @@ export function Footer() {
 					<Link href="/" prefetch={false}>
 						Stats
 					</Link>
+					<Link href="/compare" prefetch={false}>
+						Compare
+					</Link>
 					<Link href="/scorecard" className="hidden md:inline" prefetch={false}>
 						Scorecard
 					</Link>
