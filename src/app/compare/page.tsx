@@ -5,11 +5,11 @@ import { parseAsString, useQueryStates } from "nuqs";
 
 import { balls } from "@/data/data.json";
 import { PlayerAvatar } from "@/components/ui/avatar";
-import { SelectItem } from "@/components/ui/select";
-import { DateSelectField, PlayerNameField } from "@/components/label-fields";
+import { PlayerNameField } from "@/components/label-fields";
+import { DateFilter } from "@/components/stats/filters";
 
 function getComparePlayerStats(batter: string, bowler: string, date: string) {
-	const data = date !== "all time" ? filter(balls, { batter, bowler, date }) : filter(balls, { batter, bowler });
+	const data = date !== "all-time" ? filter(balls, { batter, bowler, date }) : filter(balls, { batter, bowler });
 	return {
 		runs: sumBy(data, "score"),
 		balls: size(data),
@@ -24,7 +24,7 @@ export default function ComparePage() {
 		{
 			player1: parseAsString.withDefault(""),
 			player2: parseAsString.withDefault(""),
-			date: parseAsString.withDefault("all time")
+			date: parseAsString.withDefault("all-time")
 		},
 		{ history: "push" }
 	);
@@ -35,29 +35,27 @@ export default function ComparePage() {
 		<div className="mb-auto w-full max-w-100 space-y-6">
 			<h1 className="text-left text-2xl font-bold capitalize md:text-center">Compare Stats</h1>
 			<div className="w-full space-y-3">
-				<DateSelectField value={date} onValueChange={(value) => setSearchParams((prev) => ({ ...prev, date: value }))}>
-					<SelectItem value="all time" className="font-medium">
-						All Time
-					</SelectItem>
-				</DateSelectField>
-				<PlayerNameField label="Player 1" value={player1} onSelect={(value) => setSearchParams((prev) => ({ ...prev, player1: value }))} />
-				<PlayerNameField label="Player 2" value={player2} onSelect={(value) => setSearchParams((prev) => ({ ...prev, player2: value }))} />
+				<DateFilter className="w-full justify-start" />
+				<PlayerNameField label="Player 1" value={player1} onSelect={(value) => setSearchParams({ player1: value })} />
+				<PlayerNameField label="Player 2" value={player2} onSelect={(value) => setSearchParams({ player2: value })} />
 			</div>
-			<div className="grid w-full grid-cols-[1.3fr_1.2fr_1.3fr] border p-6 md:grid-cols-[1.4fr_1.1fr_1.4fr]">
-				<SingleComparePlayer name={player1} outs={player1_Outs} {...player1Stats} />
-				<div className="pt-17 text-center md:pt-22">
-					<p className="text-muted-foreground mb-4 text-base/7">vs</p>
-					<div className="grid grid-rows-6 gap-y-2 text-sm font-medium md:text-base">
-						<p>Runs</p>
-						<p>Balls</p>
-						<p>Fours</p>
-						<p>Sixes</p>
-						<p>Strike Rate</p>
-						<p>Outs</p>
+			{player1 && player2 && (
+				<div className="grid w-full grid-cols-[1.3fr_1.2fr_1.3fr] border p-6 md:grid-cols-[1.4fr_1.1fr_1.4fr]">
+					<SingleComparePlayer name={player1} outs={player1_Outs} {...player1Stats} />
+					<div className="pt-17 text-center md:pt-22">
+						<p className="text-muted-foreground mb-4 text-base/7">vs</p>
+						<div className="grid grid-rows-6 gap-y-2 text-sm font-medium md:text-base">
+							<p>Runs</p>
+							<p>Balls</p>
+							<p>Fours</p>
+							<p>Sixes</p>
+							<p>Strike Rate</p>
+							<p>Outs</p>
+						</div>
 					</div>
+					<SingleComparePlayer name={player2} outs={player2_Outs} {...player2Stats} />
 				</div>
-				<SingleComparePlayer name={player2} outs={player2_Outs} {...player2Stats} />
-			</div>
+			)}
 		</div>
 	);
 }

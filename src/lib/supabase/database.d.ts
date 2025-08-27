@@ -109,7 +109,7 @@ export type Database = {
 					id?: number;
 					innings: number;
 					matches: number;
-					no_balls: number;
+					no_balls?: number;
 					overs: number;
 					player: string;
 					runs: number;
@@ -150,13 +150,13 @@ export type Database = {
 					stumpings: number;
 				};
 				Insert: {
-					catches: number;
+					catches?: number;
 					date: string;
 					id?: number;
 					matches: number;
 					player: string;
-					run_outs: number;
-					stumpings: number;
+					run_outs?: number;
+					stumpings?: number;
 				};
 				Update: {
 					catches?: number;
