@@ -79,15 +79,7 @@ export type Database = {
 					sixes?: number;
 					strike_rate?: number;
 				};
-				Relationships: [
-					{
-						foreignKeyName: "batting_player_fkey";
-						columns: ["player"];
-						isOneToOne: false;
-						referencedRelation: "players";
-						referencedColumns: ["name"];
-					}
-				];
+				Relationships: [];
 			};
 			bowling: {
 				Row: {
@@ -129,15 +121,7 @@ export type Database = {
 					wickets?: number;
 					wides?: number;
 				};
-				Relationships: [
-					{
-						foreignKeyName: "bowling_player_fkey";
-						columns: ["player"];
-						isOneToOne: false;
-						referencedRelation: "players";
-						referencedColumns: ["name"];
-					}
-				];
+				Relationships: [];
 			};
 			fielding: {
 				Row: {
@@ -166,26 +150,6 @@ export type Database = {
 					player?: string;
 					run_outs?: number;
 					stumpings?: number;
-				};
-				Relationships: [
-					{
-						foreignKeyName: "fielding_player_fkey";
-						columns: ["player"];
-						isOneToOne: false;
-						referencedRelation: "players";
-						referencedColumns: ["name"];
-					}
-				];
-			};
-			players: {
-				Row: {
-					name: string;
-				};
-				Insert: {
-					name: string;
-				};
-				Update: {
-					name?: string;
 				};
 				Relationships: [];
 			};

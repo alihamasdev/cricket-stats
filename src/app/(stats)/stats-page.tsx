@@ -10,8 +10,6 @@ import { StatsTable } from "@/components/stats/stats-table";
 export function StatsPage({ stats }: { stats: Promise<StatsReturn> }) {
 	const { batting, bowling, fielding } = use(stats);
 
-	console.dir(batting);
-
 	const [{ date, type }] = useQueryStates({
 		date: parseAsString.withDefault("all-time"),
 		type: parseAsString.withDefault("batting")
