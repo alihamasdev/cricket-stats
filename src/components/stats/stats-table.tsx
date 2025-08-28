@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
+import { Plus } from "lucide-react";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -8,14 +10,15 @@ import { Label } from "@/components/ui/label";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import { DataTable } from "@/components/data-table";
 
+import { buttonVariants } from "../ui/button";
+import { DateFilter, StatsFilter } from "./filters";
+
 interface StatsTableProps<T> {
 	data: T[];
 	columns: ColumnDef<T>[];
-	title?: string;
-	children?: React.ReactNode;
 }
 
-export function StatsTable<T>({ data, columns, title = "Ghurki Cricket Stats", children }: StatsTableProps<T>) {
+export function StatsTable<T>({ data, columns }: StatsTableProps<T>) {
 	const table = useReactTable({
 		data,
 		columns,
@@ -27,7 +30,7 @@ export function StatsTable<T>({ data, columns, title = "Ghurki Cricket Stats", c
 	return (
 		<div className="mb-auto w-full space-y-6">
 			<div className="flex w-full flex-col items-center justify-between gap-4 md:flex-row">
-				<h1 className="text-left text-2xl/9 font-bold capitalize">{title}</h1>
+				<h1 className="text-left text-2xl/9 font-bold capitalize">Ghurki Cricket Stats</h1>
 				<div className="flex w-full flex-col gap-4 md:w-auto md:flex-row">
 					<Input
 						className="w-full md:min-w-sm"
@@ -35,7 +38,14 @@ export function StatsTable<T>({ data, columns, title = "Ghurki Cricket Stats", c
 						value={(table.getColumn("player")?.getFilterValue() as string) ?? ""}
 						onChange={(event) => table.getColumn("player")?.setFilterValue(event.target.value)}
 					/>
-					{children}
+					<div className="flex w-full items-center justify-between gap-x-4 md:w-auto">
+						<DateFilter />
+						<StatsFilter />
+						<Link href="/add-stats" className={buttonVariants()}>
+							<Plus />
+							Add Stats
+						</Link>
+					</div>
 				</div>
 			</div>
 			<ResizablePanelGroup direction="horizontal">
