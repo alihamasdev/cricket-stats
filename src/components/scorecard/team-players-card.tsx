@@ -2,10 +2,10 @@
 
 import { toast } from "sonner";
 
+import type { Team } from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TagsInput, TagsInputInput, TagsInputItem, TagsInputLabel, TagsInputList } from "@/components/ui/tags-input";
 import { InputLabel } from "@/components/label-fields";
-import type { Team } from "@/components/scorecard/types";
 
 interface TeamPlayersCardProps {
 	title: string;

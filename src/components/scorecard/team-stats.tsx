@@ -1,6 +1,6 @@
+import { type Team } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { type Team } from "@/components/scorecard/types";
 
 interface TeamStatsProps extends React.ComponentProps<"div"> {
 	team1: Team;
@@ -8,7 +8,7 @@ interface TeamStatsProps extends React.ComponentProps<"div"> {
 	count: { batters: number; bowlers: number };
 }
 
-export function TeamStats({ team1, team2, count, className, style, ...props }: TeamStatsProps) {
+export function TeamStats({ team1, team2, count, className, ...props }: TeamStatsProps) {
 	const team1Color = "#D2D628";
 	const team2Color = "#80B2D0";
 
@@ -33,7 +33,7 @@ export function TeamStats({ team1, team2, count, className, style, ...props }: T
 				{team2.bowlers.map(({ name, wickets, runs, overs }, idx) => (
 					<div key={idx} className="grid h-9 grid-cols-[1fr_60px_60px] divide-x divide-black/50 border-b border-black/50">
 						<p className="text-gradient-end pl-3 text-left font-medium uppercase">{name}</p>
-						<p className="text-gradient-end text-center font-bold">{`${wickets}-${runs}`}</p>
+						<p className="text-gradient-end text-center font-bold">{`${wickets}${runs && "-"}${runs}`}</p>
 						<p className="text-gradient-end/80 text-center">{overs}</p>
 					</div>
 				))}

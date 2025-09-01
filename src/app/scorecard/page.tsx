@@ -3,6 +3,7 @@
 import { Fragment, useState } from "react";
 import { RefreshCcw, X } from "lucide-react";
 
+import { type Team } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -10,32 +11,51 @@ import { InputLabel, SliderLabel } from "@/components/label-fields";
 import { TeamForm } from "@/components/scorecard/team-form";
 import { TeamPlayersCard } from "@/components/scorecard/team-players-card";
 import { TeamStats } from "@/components/scorecard/team-stats";
-import { type Team } from "@/components/scorecard/types";
 
 export default function Page() {
 	const [count, setCount] = useState({ batters: 4, bowlers: 4 });
 	const [matchInfo, setMatchInfo] = useState({ title: "Match 01", result: "Match result" });
 
 	const [team1, setTeam1] = useState<Team>({
-		name: "Team 1",
+		name: "Jallo Tigers",
 		score: "",
 		wickets: "",
-		overs: "0",
+		overs: "04",
 		allOut: false,
-		players: [],
-		batters: [],
-		bowlers: []
+		players: ["Muhammad Ali", "Hamas", "Hamza", "Khizar", "Ahad"],
+		batters: [
+			{ name: "", runs: "", balls: "", out: true },
+			{ name: "", runs: "", balls: "", out: true },
+			{ name: "", runs: "", balls: "", out: true },
+			{ name: "", runs: "", balls: "", out: true }
+		],
+		bowlers: [
+			{ name: "", runs: "", wickets: "", overs: "1.0" },
+			{ name: "", runs: "", wickets: "", overs: "1.0" },
+			{ name: "", runs: "", wickets: "", overs: "1.0" },
+			{ name: "", runs: "", wickets: "", overs: "1.0" }
+		]
 	});
 
 	const [team2, setTeam2] = useState<Team>({
-		name: "Team 2",
+		name: "Mughalpura Warriors",
 		score: "",
 		wickets: "",
-		overs: "0",
+		overs: "04",
 		allOut: false,
-		players: [],
-		batters: [],
-		bowlers: []
+		players: ["Nadeem", "Muneeb", "Asad", "Waleed", "Ahsan", "Saqib"],
+		batters: [
+			{ name: "", runs: "", balls: "", out: true },
+			{ name: "", runs: "", balls: "", out: true },
+			{ name: "", runs: "", balls: "", out: true },
+			{ name: "", runs: "", balls: "", out: true }
+		],
+		bowlers: [
+			{ name: "", runs: "", wickets: "", overs: "1.0" },
+			{ name: "", runs: "", wickets: "", overs: "1.0" },
+			{ name: "", runs: "", wickets: "", overs: "1.0" },
+			{ name: "", runs: "", wickets: "", overs: "1.0" }
+		]
 	});
 
 	return (
@@ -74,16 +94,6 @@ export default function Page() {
 				>
 					<RefreshCcw />
 					Swap Team
-				</Button>
-				<Button
-					variant="destructive"
-					onClick={() => {
-						setTeam1((prevState) => ({ ...prevState, score: "", wickets: "", allOut: false, batters: [], bowlers: [] }));
-						setTeam2((prevState) => ({ ...prevState, score: "", wickets: "", allOut: false, batters: [], bowlers: [] }));
-					}}
-				>
-					<X />
-					Reset Teams
 				</Button>
 			</div>
 

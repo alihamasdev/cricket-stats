@@ -2,11 +2,11 @@
 
 import { Plus, X } from "lucide-react";
 
+import type { BattingPlayer, BowlingPlayer, Team } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Toggle } from "@/components/ui/toggle";
 import { InputLabel, PlayerNameField } from "@/components/label-fields";
-import type { BattingPlayer, BowlingPlayer, Team } from "@/components/scorecard/types";
 
 interface TeamFormProps {
 	team: Team;
