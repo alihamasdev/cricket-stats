@@ -3,10 +3,11 @@
 import { filter, size, sumBy } from "lodash";
 import { parseAsString, useQueryStates } from "nuqs";
 
-import { balls } from "@/data/data.json";
+import { calculateStrikeRate } from "@/lib/utils";
+import { balls, players } from "@/data/data.json";
 import { PlayerAvatar } from "@/components/ui/avatar";
+import { DateFilter } from "@/components/filters";
 import { PlayerNameField } from "@/components/label-fields";
-import { DateFilter } from "@/components/stats/filters";
 
 function getComparePlayerStats(batter: string, bowler: string, date: string) {
 	const data = date !== "all-time" ? filter(balls, { batter, bowler, date }) : filter(balls, { batter, bowler });
@@ -28,20 +29,30 @@ export default function ComparePage() {
 		},
 		{ history: "push" }
 	);
-	const { outs: player2_Outs, ...player1Stats } = getComparePlayerStats(player1, player2, date);
-	const { outs: player1_Outs, ...player2Stats } = getComparePlayerStats(player2, player1, date);
+	const player1Stats = getComparePlayerStats(player1, player2, date);
+	const player2Stats = getComparePlayerStats(player2, player1, date);
 
 	return (
 		<div className="mb-auto w-full max-w-100 space-y-6">
 			<h1 className="text-left text-2xl font-bold capitalize md:text-center">Compare Stats</h1>
 			<div className="w-full space-y-3">
 				<DateFilter className="w-full justify-start" />
-				<PlayerNameField label="Player 1" value={player1} onSelect={(value) => setSearchParams({ player1: value })} />
-				<PlayerNameField label="Player 2" value={player2} onSelect={(value) => setSearchParams({ player2: value })} />
+				<PlayerNameField
+					label="Player 1"
+					value={player1}
+					players={players.filter((value) => value !== player2)}
+					onSelect={(value) => setSearchParams({ player1: value })}
+				/>
+				<PlayerNameField
+					label="Player 2"
+					value={player2}
+					players={players.filter((value) => value !== player1)}
+					onSelect={(value) => setSearchParams({ player2: value })}
+				/>
 			</div>
 			{player1 && player2 && (
 				<div className="grid w-full grid-cols-[1.3fr_1.2fr_1.3fr] border p-6 md:grid-cols-[1.4fr_1.1fr_1.4fr]">
-					<SingleComparePlayer name={player1} outs={player1_Outs} {...player1Stats} />
+					<SingleComparePlayer name={player1} {...player1Stats} />
 					<div className="pt-17 text-center md:pt-22">
 						<p className="text-muted-foreground mb-4 text-base/7">vs</p>
 						<div className="grid grid-rows-6 gap-y-2 text-sm font-medium md:text-base">
@@ -53,7 +64,7 @@ export default function ComparePage() {
 							<p>Outs</p>
 						</div>
 					</div>
-					<SingleComparePlayer name={player2} outs={player2_Outs} {...player2Stats} />
+					<SingleComparePlayer name={player2} {...player2Stats} />
 				</div>
 			)}
 		</div>
@@ -70,7 +81,7 @@ interface SingleComparePlayerProps {
 }
 
 function SingleComparePlayer({ name, runs, balls, fours, sixes, outs }: SingleComparePlayerProps) {
-	const strikeRate = (runs / balls) * 100;
+	const strikeRate = calculateStrikeRate(runs, balls);
 	return (
 		<div className="flex flex-col items-center space-y-2">
 			<PlayerAvatar name={name} className="size-15 md:size-20" />
@@ -80,7 +91,7 @@ function SingleComparePlayer({ name, runs, balls, fours, sixes, outs }: SingleCo
 				<p>{balls}</p>
 				<p>{fours}</p>
 				<p>{sixes}</p>
-				<p>{strikeRate ? strikeRate.toFixed(2) : "0.00"}</p>
+				<p>{strikeRate}</p>
 				<p>{outs}</p>
 			</div>
 		</div>

@@ -1,35 +1,32 @@
 import { z } from "zod";
 
-const field = z
-	.string()
-	.trim()
-	.refine((val) => Boolean(val.length), { message: "Field is required" });
+import { players } from "@/data/data.json";
 
 export const statsSchema = z.object({
-	name: field,
-	date: field,
-	matches: field,
+	name: z.enum(players, "Enter valid player name"),
+	date: z.string().min(1, "Field is required").trim(),
+	matches: z.string().min(1, "Field is required").trim(),
 	batting: z.object({
-		innings: field,
-		runs: field,
-		balls: field,
-		fours: field,
-		sixes: field,
-		ducks: field,
-		not_outs: field
+		innings: z.string().min(1, "Field is required").trim(),
+		runs: z.string().min(1, "Field is required").trim(),
+		balls: z.string().min(1, "Field is required").trim(),
+		fours: z.string().min(1, "Field is required").trim(),
+		sixes: z.string().min(1, "Field is required").trim(),
+		ducks: z.string().min(1, "Field is required").trim(),
+		not_outs: z.string().min(1, "Field is required").trim()
 	}),
 	bowling: z.object({
-		innings: field,
-		overs: field,
-		wickets: field,
-		runs: field,
-		dots: field,
-		wides: field,
-		no_balls: field.optional()
+		innings: z.string().min(1, "Field is required").trim(),
+		overs: z.string().min(1, "Field is required").trim(),
+		wickets: z.string().min(1, "Field is required").trim(),
+		runs: z.string().min(1, "Field is required").trim(),
+		dots: z.string().min(1, "Field is required").trim(),
+		wides: z.string().min(1, "Field is required").trim(),
+		no_balls: z.string().min(1, "Field is required").trim().optional()
 	}),
 	fielding: z.object({
-		catches: field.optional(),
-		run_outs: field.optional(),
-		stumpings: field.optional()
+		catches: z.string().min(1, "Field is required").trim().optional(),
+		run_outs: z.string().min(1, "Field is required").trim().optional(),
+		stumpings: z.string().min(1, "Field is required").trim().optional()
 	})
 });
