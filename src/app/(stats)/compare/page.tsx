@@ -10,6 +10,8 @@ import { DateFilter } from "@/components/filters";
 import { PlayerNameField } from "@/components/label-fields";
 
 function getComparePlayerStats(batter: string, bowler: string, date: string) {
+	if (!batter || !bowler) return null;
+
 	const data = date !== "all-time" ? filter(balls, { batter, bowler, date }) : filter(balls, { batter, bowler });
 	return {
 		runs: sumBy(data, "score"),
@@ -50,7 +52,7 @@ export default function ComparePage() {
 					onSelect={(value) => setSearchParams({ player2: value })}
 				/>
 			</div>
-			{player1 && player2 && (
+			{player1Stats && player2Stats && (
 				<div className="grid w-full grid-cols-[1.3fr_1.2fr_1.3fr] border p-6 md:grid-cols-[1.4fr_1.1fr_1.4fr]">
 					<SingleComparePlayer name={player1} {...player1Stats} />
 					<div className="pt-17 text-center md:pt-22">

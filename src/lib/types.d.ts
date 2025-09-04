@@ -4,6 +4,12 @@ export type BattingStats = Tables<"batting">;
 export type BowlingStats = Tables<"bowling">;
 export type FieldingStats = Tables<"fielding">;
 
+export type StatsData = {
+	batting: Record<string, BattingStats[]>;
+	bowling: Record<string, BowlingStats[]>;
+	fielding: Record<string, FieldingStats[]>;
+};
+
 export interface Team {
 	name: string;
 	score: string;

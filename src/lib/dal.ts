@@ -2,16 +2,10 @@ import { cache } from "react";
 import { groupBy, map, reduce } from "lodash";
 
 import { createClient } from "@/lib/supabase/server";
-import type { BattingStats, BowlingStats, FieldingStats } from "@/lib/types";
+import type { BattingStats, BowlingStats, FieldingStats, StatsData } from "@/lib/types";
 import { calculateAverage, calculateStrikeRate } from "@/lib/utils";
 
-export type StatsReturn = {
-	batting: Record<string, BattingStats[]>;
-	bowling: Record<string, BowlingStats[]>;
-	fielding: Record<string, FieldingStats[]>;
-};
-
-export const getStats = cache(async (): Promise<StatsReturn> => {
+export const getStats = cache(async (): Promise<StatsData> => {
 	const supabase = await createClient();
 	const [batting, bowling, fielding] = await Promise.all([
 		supabase.from("batting").select(`*`),
