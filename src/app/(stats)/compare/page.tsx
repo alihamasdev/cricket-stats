@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { filter } from "lodash";
 import { parseAsString, useQueryStates } from "nuqs";
 
@@ -31,8 +32,8 @@ export default function ComparePage() {
 		},
 		{ history: "push" }
 	);
-	const player1Stats = getComparePlayerStats(player1, player2, date);
-	const player2Stats = getComparePlayerStats(player2, player1, date);
+	const player1Stats = useMemo(() => getComparePlayerStats(player1, player2, date), [player1, player2, date]);
+	const player2Stats = useMemo(() => getComparePlayerStats(player2, player1, date), [player1, player2, date]);
 
 	return (
 		<div className="mb-auto w-full max-w-100 space-y-6">
