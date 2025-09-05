@@ -7,6 +7,7 @@ import { Plus } from "lucide-react";
 import { parseAsString, useQueryStates } from "nuqs";
 
 import type { BattingStats, BowlingStats, FieldingStats } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import { PlayerAvatarName } from "@/components/ui/avatar";
 import { buttonVariants } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -82,7 +83,7 @@ function StatsTable<T>({ data, columns }: { data: T[]; columns: ColumnDef<T>[] }
 	});
 
 	return (
-		<div className="mb-auto w-full space-y-6">
+		<div className="mb-auto w-full space-y-3 md:space-y-6">
 			<div className="flex w-full flex-col items-center justify-between gap-4 md:flex-row">
 				<h1 className="text-left text-2xl/9 font-bold capitalize">Ghurki Cricket Stats</h1>
 				<div className="flex w-full flex-col gap-4 md:w-auto md:flex-row">
@@ -92,10 +93,10 @@ function StatsTable<T>({ data, columns }: { data: T[]; columns: ColumnDef<T>[] }
 						value={(table.getColumn("player")?.getFilterValue() as string) ?? ""}
 						onChange={(event) => table.getColumn("player")?.setFilterValue(event.target.value)}
 					/>
-					<div className="flex w-full items-center justify-between gap-x-4 md:w-auto">
+					<div className="grid w-full grid-cols-2 gap-4 md:flex">
 						<DateFilter />
 						<StatsFilter />
-						<Link href="/add-stats" className={buttonVariants({ className: "hidden md:inline-flex" })}>
+						<Link href="/add-stats" className={cn(buttonVariants({ className: "hidden md:inline-flex" }))}>
 							<Plus />
 							Add Stats
 						</Link>

@@ -30,3 +30,11 @@ export const statsSchema = z.object({
 		stumpings: z.string().min(1, "Field is required").trim().optional()
 	})
 });
+
+export const ballSchema = z.object({
+	batter: z.enum(players),
+	bowler: z.enum(players),
+	score: z.string().min(1, "Field is required").trim(),
+	wicket: z.boolean().optional(),
+	date: z.string().min(1, "Field is required").trim()
+});

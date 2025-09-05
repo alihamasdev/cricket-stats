@@ -39,12 +39,10 @@ function PlayerAvatar({ name, ...props }: React.ComponentProps<typeof Avatar> & 
 
 function PlayerAvatarName({ name }: { name: string }) {
 	return (
-		<div className="flex min-w-25 items-center gap-x-2">
+		<Link href={`/${name}`} className="flex items-center gap-x-2" prefetch={false}>
 			<PlayerAvatar name={name} className="size-6 md:size-8" />
-			<Link href={`/${name}`} prefetch={false} className="font-medium capitalize">
-				{name}
-			</Link>
-		</div>
+			<span className="text-sm font-medium capitalize">{name}</span>
+		</Link>
 	);
 }
 

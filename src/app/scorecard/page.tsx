@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useState } from "react";
-import { RefreshCcw, X } from "lucide-react";
+import { RefreshCcw } from "lucide-react";
 
 import { type Team } from "@/lib/types";
 import { Button } from "@/components/ui/button";

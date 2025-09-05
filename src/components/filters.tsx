@@ -14,7 +14,7 @@ import {
 	DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 
-export function StatsFilter() {
+export function StatsFilter({ hasFielding = true }: { hasFielding?: boolean }) {
 	const [type, setType] = useQueryState("type", { defaultValue: "batting" });
 	return (
 		<DropdownMenu>
@@ -28,7 +28,7 @@ export function StatsFilter() {
 				<DropdownMenuRadioGroup value={type} onValueChange={setType}>
 					<DropdownMenuRadioItem value="batting">Batting</DropdownMenuRadioItem>
 					<DropdownMenuRadioItem value="bowling">Bowling</DropdownMenuRadioItem>
-					<DropdownMenuRadioItem value="fielding">Fielding</DropdownMenuRadioItem>
+					{hasFielding && <DropdownMenuRadioItem value="fielding">Fielding</DropdownMenuRadioItem>}
 				</DropdownMenuRadioGroup>
 			</DropdownMenuContent>
 		</DropdownMenu>
