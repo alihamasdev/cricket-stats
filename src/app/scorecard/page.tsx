@@ -3,7 +3,7 @@
 import { Fragment, useState } from "react";
 import { RefreshCcw } from "lucide-react";
 
-import { type Team } from "@/lib/types";
+import type { Team } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -13,27 +13,31 @@ import { TeamPlayersCard } from "@/components/scorecard/team-players-card";
 import { TeamStats } from "@/components/scorecard/team-stats";
 
 export default function Page() {
-	const [count, setCount] = useState({ batters: 4, bowlers: 4 });
+	const [count, setCount] = useState({ batters: 6, bowlers: 6 });
 	const [matchInfo, setMatchInfo] = useState({ title: "Match 01", result: "Match result" });
 
 	const [team1, setTeam1] = useState<Team>({
 		name: "Jallo Tigers",
 		score: "",
 		wickets: "",
-		overs: "04",
+		overs: "08",
 		allOut: false,
-		players: ["Muhammad Ali", "Hamas", "Hamza", "Khizar", "Ahad"],
+		players: ["Muhammad Ali", "Hamas", "Hamza", "Khizar", "Ahad", "Ahsan"],
 		batters: [
+			{ name: "", runs: "", balls: "", out: true },
+			{ name: "", runs: "", balls: "", out: true },
 			{ name: "", runs: "", balls: "", out: true },
 			{ name: "", runs: "", balls: "", out: true },
 			{ name: "", runs: "", balls: "", out: true },
 			{ name: "", runs: "", balls: "", out: true }
 		],
 		bowlers: [
-			{ name: "", runs: "", wickets: "", overs: "1.0" },
-			{ name: "", runs: "", wickets: "", overs: "1.0" },
-			{ name: "", runs: "", wickets: "", overs: "1.0" },
-			{ name: "", runs: "", wickets: "", overs: "1.0" }
+			{ name: "", runs: "", wickets: "0", overs: "2.0" },
+			{ name: "", runs: "", wickets: "0", overs: "2.0" },
+			{ name: "", runs: "", wickets: "0", overs: "1.0" },
+			{ name: "", runs: "", wickets: "0", overs: "1.0" },
+			{ name: "", runs: "", wickets: "0", overs: "1.0" },
+			{ name: "", runs: "", wickets: "0", overs: "1.0" }
 		]
 	});
 
@@ -41,20 +45,24 @@ export default function Page() {
 		name: "Mughalpura Warriors",
 		score: "",
 		wickets: "",
-		overs: "04",
+		overs: "08",
 		allOut: false,
-		players: ["Nadeem", "Muneeb", "Asad", "Waleed", "Ahsan", "Saqib"],
+		players: ["Nadeem", "Muneeb", "Asad", "Waleed", "Faisal", "Saqib"],
 		batters: [
+			{ name: "", runs: "", balls: "", out: true },
+			{ name: "", runs: "", balls: "", out: true },
 			{ name: "", runs: "", balls: "", out: true },
 			{ name: "", runs: "", balls: "", out: true },
 			{ name: "", runs: "", balls: "", out: true },
 			{ name: "", runs: "", balls: "", out: true }
 		],
 		bowlers: [
-			{ name: "", runs: "", wickets: "", overs: "1.0" },
-			{ name: "", runs: "", wickets: "", overs: "1.0" },
-			{ name: "", runs: "", wickets: "", overs: "1.0" },
-			{ name: "", runs: "", wickets: "", overs: "1.0" }
+			{ name: "", runs: "", wickets: "0", overs: "2.0" },
+			{ name: "", runs: "", wickets: "0", overs: "2.0" },
+			{ name: "", runs: "", wickets: "0", overs: "1.0" },
+			{ name: "", runs: "", wickets: "0", overs: "1.0" },
+			{ name: "", runs: "", wickets: "0", overs: "1.0" },
+			{ name: "", runs: "", wickets: "0", overs: "1.0" }
 		]
 	});
 
