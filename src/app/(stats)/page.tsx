@@ -7,7 +7,7 @@ import { Plus } from "lucide-react";
 import { parseAsString, useQueryStates } from "nuqs";
 
 import type { BattingStats, BowlingStats, FieldingStats } from "@/lib/types";
-import { cn } from "@/lib/utils";
+import { ballsToOvers, cn } from "@/lib/utils";
 import { PlayerAvatarName } from "@/components/ui/avatar";
 import { buttonVariants } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -35,7 +35,7 @@ const columns = {
 		{ accessorKey: "player", header: "Player", cell: ({ row }) => <PlayerAvatarName name={row.original.player} /> },
 		{ accessorKey: "matches", header: "Mat" },
 		{ accessorKey: "innings", header: "Inns" },
-		{ accessorKey: "overs", header: "Overs" },
+		{ accessorKey: "balls", header: "Overs", cell: ({ row }) => ballsToOvers(row.original.balls) },
 		{ accessorKey: "runs", header: "Runs" },
 		{ accessorKey: "wickets", header: "Wkts" },
 		{ accessorKey: "dots", header: "Dots" },

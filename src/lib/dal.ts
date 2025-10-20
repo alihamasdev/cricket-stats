@@ -57,14 +57,14 @@ export const getStats = cache(async (): Promise<StatsData> => {
 			(acc, record) => ({
 				matches: acc.matches + record.matches,
 				innings: acc.innings + record.innings,
-				overs: acc.overs + record.overs,
+				balls: acc.balls + record.balls,
 				wickets: acc.wickets + record.wickets,
 				runs: acc.runs + record.runs,
 				dots: acc.dots + record.dots,
 				no_balls: acc.no_balls + record.no_balls,
 				wides: acc.wides + record.wides
 			}),
-			{ wickets: 0, dots: 0, innings: 0, matches: 0, no_balls: 0, overs: 0, runs: 0, wides: 0 }
+			{ wickets: 0, dots: 0, innings: 0, matches: 0, no_balls: 0, balls: 0, runs: 0, wides: 0 }
 		);
 
 		return {
@@ -76,7 +76,7 @@ export const getStats = cache(async (): Promise<StatsData> => {
 			innings: summed.innings,
 			matches: summed.matches,
 			no_balls: summed.no_balls,
-			overs: summed.overs,
+			balls: summed.balls,
 			runs: summed.runs,
 			wides: summed.wides
 		};

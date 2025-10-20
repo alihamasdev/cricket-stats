@@ -1,8 +1,8 @@
 "use server";
 
-import { z } from "zod";
+import type { z } from "zod";
 
-import { type TablesInsert } from "@/lib/supabase/database";
+import type { TablesInsert } from "@/lib/supabase/database";
 import { createClient } from "@/lib/supabase/server";
 import { calculateAverage, calculateStrikeRate } from "@/lib/utils";
 import { statsSchema } from "@/lib/validation";
@@ -36,7 +36,7 @@ export async function addStatsAction(data: z.infer<typeof statsSchema>) {
 		innings: Number(bowling.innings),
 		dots: Number(bowling.dots),
 		no_balls: Number(bowling.no_balls),
-		overs: Number(bowling.overs),
+		balls: Number(bowling.overs),
 		runs: Number(bowling.runs),
 		wickets: Number(bowling.wickets),
 		wides: Number(bowling.wides)

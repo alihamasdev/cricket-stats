@@ -83,39 +83,39 @@ export type Database = {
 			};
 			bowling: {
 				Row: {
+					balls: number;
 					date: string;
 					dots: number;
 					id: number;
 					innings: number;
 					matches: number;
 					no_balls: number;
-					overs: number;
 					player: string;
 					runs: number;
 					wickets: number;
 					wides: number;
 				};
 				Insert: {
+					balls: number;
 					date: string;
 					dots: number;
 					id?: number;
 					innings: number;
 					matches: number;
 					no_balls?: number;
-					overs: number;
 					player: string;
 					runs: number;
 					wickets: number;
 					wides: number;
 				};
 				Update: {
+					balls?: number;
 					date?: string;
 					dots?: number;
 					id?: number;
 					innings?: number;
 					matches?: number;
 					no_balls?: number;
-					overs?: number;
 					player?: string;
 					runs?: number;
 					wickets?: number;

@@ -248,7 +248,7 @@ export default function AddStatsPage() {
 								control={form.control}
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Overs</FormLabel>
+										<FormLabel>Balls</FormLabel>
 										<FormControl>
 											<Input type="number" disabled={isPending} {...field} />
 										</FormControl>

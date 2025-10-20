@@ -14,7 +14,7 @@ import {
 	DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 
-export function StatsFilter({ hasFielding = true }: { hasFielding?: boolean }) {
+export function StatsFilter() {
 	const [type, setType] = useQueryState("type", { defaultValue: "batting" });
 	return (
 		<DropdownMenu>
@@ -28,7 +28,7 @@ export function StatsFilter({ hasFielding = true }: { hasFielding?: boolean }) {
 				<DropdownMenuRadioGroup value={type} onValueChange={setType}>
 					<DropdownMenuRadioItem value="batting">Batting</DropdownMenuRadioItem>
 					<DropdownMenuRadioItem value="bowling">Bowling</DropdownMenuRadioItem>
-					{hasFielding && <DropdownMenuRadioItem value="fielding">Fielding</DropdownMenuRadioItem>}
+					<DropdownMenuRadioItem value="fielding">Fielding</DropdownMenuRadioItem>
 				</DropdownMenuRadioGroup>
 			</DropdownMenuContent>
 		</DropdownMenu>
@@ -47,7 +47,9 @@ export function DateFilter({ variant = "outline", ...props }: React.ComponentPro
 			</DropdownMenuTrigger>
 			<DropdownMenuContent>
 				<DropdownMenuRadioGroup value={queryDate} onValueChange={setQueryDate}>
-					<DropdownMenuRadioItem value="all-time">All Time</DropdownMenuRadioItem>
+					<DropdownMenuRadioItem value="all-time" className="font-medium">
+						All Time
+					</DropdownMenuRadioItem>
 					{dates.map(({ date, title }) => (
 						<DropdownMenuRadioItem key={date} value={date} className="justify-between">
 							<span className="font-medium">{title}</span>
