@@ -3,15 +3,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@theme {
-	--font-weight-*: initial;
-	--font-weight-light: 300;
-	--font-weight-normal: 400;
-	--font-weight-medium: 500;
-	--font-weight-semibold: 600;
-	--font-weight-bold: 700;
-}
-
 @theme inline {
 	--color-background: var(--background);
 	--color-foreground: var(--foreground);
@@ -31,16 +22,6 @@
 	--color-popover: var(--popover);
 	--color-card-foreground: var(--card-foreground);
 	--color-card: var(--card);
-	--color-chart-1: var(--chart-1);
-	--color-chart-2: var(--chart-2);
-	--color-chart-3: var(--chart-3);
-	--color-chart-4: var(--chart-4);
-	--color-chart-5: var(--chart-5);
-
-	--color-black: rgb(0, 0, 0);
-	--color-white: rgb(255, 255, 255);
-	--color-gradient-start: rgb(216, 35, 84);
-	--color-gradient-end: rgb(37, 37, 125);
 }
 
 :root {
@@ -62,11 +43,6 @@
 	--border: rgb(228, 228, 231);
 	--input: rgb(228, 228, 231);
 	--ring: rgb(159, 159, 169);
-	--chart-1: oklch(0.646 0.222 41.116);
-	--chart-2: oklch(0.6 0.118 184.704);
-	--chart-3: oklch(0.398 0.07 227.392);
-	--chart-4: oklch(0.828 0.189 84.429);
-	--chart-5: oklch(0.769 0.188 70.08);
 }
 
 .dark {
@@ -88,11 +64,6 @@
 	--border: rgba(255, 255, 255, 0.1);
 	--input: rgba(255, 255, 255, 0.15);
 	--ring: rgb(113, 113, 123);
-	--chart-1: oklch(0.488 0.243 264.376);
-	--chart-2: oklch(0.696 0.17 162.48);
-	--chart-3: oklch(0.769 0.188 70.08);
-	--chart-4: oklch(0.627 0.265 303.9);
-	--chart-5: oklch(0.645 0.246 16.439);
 }
 
 @layer base {
@@ -101,8 +72,5 @@
 	}
 	body {
 		@apply bg-background text-foreground;
-	}
-	::-webkit-inner-spin-button {
-		@apply hidden;
 	}
 }

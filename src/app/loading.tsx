@@ -1,3 +1,5 @@
+import { LoaderIcon } from "lucide-react";
+
 export default function Loading() {
-	return <div className="border-foreground/10 border-t-foreground size-10 animate-spin rounded-full border-5" />;
+	return <LoaderIcon className="mx-auto mt-10 animate-spin" size={24} />;
 }

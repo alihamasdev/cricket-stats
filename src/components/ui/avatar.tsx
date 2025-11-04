@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
+import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { UserRound } from "lucide-react";
-import { Avatar as AvatarPrimitive } from "radix-ui";
 
 import { cn } from "@/lib/utils";
 
@@ -28,22 +27,16 @@ function AvatarFallback({ className, ...props }: React.ComponentProps<typeof Ava
 	);
 }
 
-function PlayerAvatar({ name, ...props }: React.ComponentProps<typeof Avatar> & { name: string }) {
-	return (
-		<Avatar {...props}>
-			<AvatarImage src={`/players/${name}.png`} />
-			<AvatarFallback />
-		</Avatar>
-	);
-}
-
 function PlayerAvatarName({ name }: { name: string }) {
 	return (
-		<Link href={`/${name}`} className="flex items-center gap-x-2" prefetch={false}>
-			<PlayerAvatar name={name} className="size-6 md:size-8" />
+		<div className="flex items-center gap-x-2">
+			<Avatar className="size-6 md:size-8">
+				<AvatarImage src={`/players/${name}.png`} />
+				<AvatarFallback />
+			</Avatar>
 			<span className="text-sm font-medium capitalize">{name}</span>
-		</Link>
+		</div>
 	);
 }
 
-export { Avatar, AvatarImage, AvatarFallback, PlayerAvatar, PlayerAvatarName };
+export { Avatar, AvatarImage, AvatarFallback, PlayerAvatarName };

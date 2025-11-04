@@ -35,51 +35,50 @@ export type Database = {
 		Tables: {
 			batting: {
 				Row: {
-					average: number;
 					balls: number;
 					date: string;
 					ducks: number;
 					fours: number;
 					id: number;
 					innings: number;
-					matches: number;
 					not_outs: number;
 					player: string;
 					runs: number;
 					sixes: number;
-					strike_rate: number;
 				};
 				Insert: {
-					average: number;
 					balls: number;
 					date: string;
 					ducks: number;
 					fours: number;
 					id?: number;
 					innings: number;
-					matches: number;
 					not_outs: number;
 					player: string;
 					runs: number;
 					sixes: number;
-					strike_rate: number;
 				};
 				Update: {
-					average?: number;
 					balls?: number;
 					date?: string;
 					ducks?: number;
 					fours?: number;
 					id?: number;
 					innings?: number;
-					matches?: number;
 					not_outs?: number;
 					player?: string;
 					runs?: number;
 					sixes?: number;
-					strike_rate?: number;
 				};
-				Relationships: [];
+				Relationships: [
+					{
+						foreignKeyName: "batting_date_fkey";
+						columns: ["date"];
+						isOneToOne: false;
+						referencedRelation: "dates";
+						referencedColumns: ["id"];
+					}
+				];
 			};
 			bowling: {
 				Row: {
@@ -88,7 +87,6 @@ export type Database = {
 					dots: number;
 					id: number;
 					innings: number;
-					matches: number;
 					no_balls: number;
 					player: string;
 					runs: number;
@@ -101,8 +99,7 @@ export type Database = {
 					dots: number;
 					id?: number;
 					innings: number;
-					matches: number;
-					no_balls?: number;
+					no_balls: number;
 					player: string;
 					runs: number;
 					wickets: number;
@@ -114,42 +111,34 @@ export type Database = {
 					dots?: number;
 					id?: number;
 					innings?: number;
-					matches?: number;
 					no_balls?: number;
 					player?: string;
 					runs?: number;
 					wickets?: number;
 					wides?: number;
 				};
-				Relationships: [];
+				Relationships: [
+					{
+						foreignKeyName: "bowling_date_fkey";
+						columns: ["date"];
+						isOneToOne: false;
+						referencedRelation: "dates";
+						referencedColumns: ["id"];
+					}
+				];
 			};
-			fielding: {
+			dates: {
 				Row: {
-					catches: number;
-					date: string;
-					id: number;
-					matches: number;
-					player: string;
-					run_outs: number;
-					stumpings: number;
+					id: string;
+					title: string;
 				};
 				Insert: {
-					catches?: number;
-					date: string;
-					id?: number;
-					matches: number;
-					player: string;
-					run_outs?: number;
-					stumpings?: number;
+					id: string;
+					title: string;
 				};
 				Update: {
-					catches?: number;
-					date?: string;
-					id?: number;
-					matches?: number;
-					player?: string;
-					run_outs?: number;
-					stumpings?: number;
+					id?: string;
+					title?: string;
 				};
 				Relationships: [];
 			};

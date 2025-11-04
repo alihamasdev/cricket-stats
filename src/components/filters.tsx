@@ -4,7 +4,8 @@ import { format } from "date-fns";
 import { ArrowUpDown, Calendar } from "lucide-react";
 import { useQueryState } from "nuqs";
 
-import { dates } from "@/data/data.json";
+import { Tables } from "@/lib/supabase/database";
+import { dateSearchParams, typeSearchParams } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -15,7 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export function StatsFilter() {
-	const [type, setType] = useQueryState("type", { defaultValue: "batting" });
+	const [type, setType] = useQueryState("type", typeSearchParams);
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -28,29 +29,29 @@ export function StatsFilter() {
 				<DropdownMenuRadioGroup value={type} onValueChange={setType}>
 					<DropdownMenuRadioItem value="batting">Batting</DropdownMenuRadioItem>
 					<DropdownMenuRadioItem value="bowling">Bowling</DropdownMenuRadioItem>
-					<DropdownMenuRadioItem value="fielding">Fielding</DropdownMenuRadioItem>
 				</DropdownMenuRadioGroup>
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);
 }
 
-export function DateFilter({ variant = "outline", ...props }: React.ComponentProps<typeof Button>) {
-	const [queryDate, setQueryDate] = useQueryState("date", { defaultValue: "all-time" });
+export function DateFilter({ dates }: { dates: Tables<"dates">[] }) {
+	const [queryDate, setQueryDate] = useQueryState("date", dateSearchParams);
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button variant={variant} {...props}>
+				<Button variant="outline">
 					<Calendar />
-					{queryDate === "all-time" ? "All Time" : format(queryDate, "PP")}
+					{queryDate ? format(queryDate, "PP") : "All Time"}
 				</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent>
-				<DropdownMenuRadioGroup value={queryDate} onValueChange={setQueryDate}>
-					<DropdownMenuRadioItem value="all-time" className="font-medium">
+			<DropdownMenuContent align="end">
+				<DropdownMenuRadioGroup value={queryDate ?? ""} onValueChange={(value) => setQueryDate(value || null)}>
+					<DropdownMenuRadioItem value="" className="font-medium">
 						All Time
 					</DropdownMenuRadioItem>
-					{dates.map(({ date, title }) => (
+					{dates.sort().map(({ id: date, title }) => (
 						<DropdownMenuRadioItem key={date} value={date} className="justify-between">
 							<span className="font-medium">{title}</span>
 							<span className="text-muted-foreground">({format(date, "PP")})</span>
