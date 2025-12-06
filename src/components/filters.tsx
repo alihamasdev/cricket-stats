@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
+	DropdownMenuCheckboxItem,
 	DropdownMenuRadioGroup,
 	DropdownMenuRadioItem,
 	DropdownMenuTrigger
@@ -38,26 +39,45 @@ export function StatsFilter() {
 export function DateFilter({ dates }: { dates: Tables<"dates">[] }) {
 	const [queryDate, setQueryDate] = useQueryState("date", dateSearchParams);
 
+	const selectedDates = queryDate ?? [];
+
+	const toggleDate = (date: string) => {
+		if (selectedDates.includes(date)) {
+			const newDates = selectedDates.filter((d) => d !== date);
+			setQueryDate(newDates.length > 0 ? newDates : null);
+		} else {
+			setQueryDate([...selectedDates, date]);
+		}
+	};
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
 				<Button variant="outline">
 					<Calendar />
-					{queryDate ? format(queryDate, "PP") : "All Time"}
+					{selectedDates.length > 0 ? `${selectedDates.length} selected` : "All Time"}
 				</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent align="end">
-				<DropdownMenuRadioGroup value={queryDate ?? ""} onValueChange={(value) => setQueryDate(value || null)}>
-					<DropdownMenuRadioItem value="" className="font-medium">
-						All Time
-					</DropdownMenuRadioItem>
-					{dates.sort().map(({ id: date, title }) => (
-						<DropdownMenuRadioItem key={date} value={date} className="justify-between">
-							<span className="font-medium">{title}</span>
-							<span className="text-muted-foreground">({format(date, "PP")})</span>
-						</DropdownMenuRadioItem>
-					))}
-				</DropdownMenuRadioGroup>
+			<DropdownMenuContent align="end" className="max-h-96 overflow-y-auto">
+				<DropdownMenuCheckboxItem
+					checked={selectedDates.length === 0}
+					onCheckedChange={() => setQueryDate(null)}
+					className="font-medium"
+				>
+					All Time
+				</DropdownMenuCheckboxItem>
+				{dates.sort().map(({ id: date, title }) => (
+					<DropdownMenuCheckboxItem
+						key={date}
+						checked={selectedDates.includes(date)}
+						onCheckedChange={() => toggleDate(date)}
+						className="justify-between"
+						onSelect={(e) => e.preventDefault()}
+					>
+						<span className="font-medium">{title}</span>
+						<span className="text-muted-foreground">({format(date, "PP")})</span>
+					</DropdownMenuCheckboxItem>
+				))}
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);

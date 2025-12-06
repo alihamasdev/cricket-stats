@@ -6,31 +6,6 @@ export type Database = {
 	__InternalSupabase: {
 		PostgrestVersion: "13.0.4";
 	};
-	graphql_public: {
-		Tables: {
-			[_ in never]: never;
-		};
-		Views: {
-			[_ in never]: never;
-		};
-		Functions: {
-			graphql: {
-				Args: {
-					extensions?: Json;
-					operationName?: string;
-					query?: string;
-					variables?: Json;
-				};
-				Returns: Json;
-			};
-		};
-		Enums: {
-			[_ in never]: never;
-		};
-		CompositeTypes: {
-			[_ in never]: never;
-		};
-	};
 	public: {
 		Tables: {
 			batting: {
@@ -38,7 +13,9 @@ export type Database = {
 					balls: number;
 					date: string;
 					ducks: number;
+					fifties: number;
 					fours: number;
+					hundreds: number;
 					id: number;
 					innings: number;
 					not_outs: number;
@@ -50,7 +27,9 @@ export type Database = {
 					balls: number;
 					date: string;
 					ducks: number;
+					fifties?: number;
 					fours: number;
+					hundreds?: number;
 					id?: number;
 					innings: number;
 					not_outs: number;
@@ -62,7 +41,9 @@ export type Database = {
 					balls?: number;
 					date?: string;
 					ducks?: number;
+					fifties?: number;
 					fours?: number;
+					hundreds?: number;
 					id?: number;
 					innings?: number;
 					not_outs?: number;
@@ -82,6 +63,8 @@ export type Database = {
 			};
 			bowling: {
 				Row: {
+					"2fr": number;
+					"3fr": number;
 					balls: number;
 					date: string;
 					dots: number;
@@ -94,6 +77,8 @@ export type Database = {
 					wides: number;
 				};
 				Insert: {
+					"2fr"?: number;
+					"3fr"?: number;
 					balls: number;
 					date: string;
 					dots: number;
@@ -106,6 +91,8 @@ export type Database = {
 					wides: number;
 				};
 				Update: {
+					"2fr"?: number;
+					"3fr"?: number;
 					balls?: number;
 					date?: string;
 					dots?: number;
@@ -147,7 +134,44 @@ export type Database = {
 			[_ in never]: never;
 		};
 		Functions: {
-			[_ in never]: never;
+			get_batting_stats: {
+				Args: {
+					date_filter?: string | null;
+				};
+				Returns: {
+					player: string;
+					innings: number;
+					runs: number;
+					balls: number;
+					not_outs: number;
+					fours: number;
+					sixes: number;
+					ducks: number;
+					fifties: number;
+					hundreds: number;
+					average: number;
+					strike_rate: number;
+				}[];
+			};
+			get_bowling_stats: {
+				Args: {
+					date_filter?: string | null;
+				};
+				Returns: {
+					player: string;
+					innings: number;
+					balls: number;
+					wickets: number;
+					runs: number;
+					dots: number;
+					wides: number;
+					no_balls: number;
+					"2fr": number;
+					"3fr": number;
+					average: number;
+					strike_rate: number;
+				}[];
+			};
 		};
 		Enums: {
 			[_ in never]: never;
@@ -266,9 +290,6 @@ export type CompositeTypes<
 		: never;
 
 export const Constants = {
-	graphql_public: {
-		Enums: {}
-	},
 	public: {
 		Enums: {}
 	}

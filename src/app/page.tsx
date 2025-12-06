@@ -4,7 +4,7 @@ import { battingColumns, bowlingColumns } from "@/components/columns";
 import { DataTable } from "@/components/data-table";
 
 export default async function BattingStatsPage({ searchParams }: PageProps<"/">) {
-	const [{ date, type }, dates] = await Promise.all([await loadSearchParams(searchParams), getDates()]);
+	const [{ date, type }, dates] = await Promise.all([loadSearchParams(searchParams), getDates()]);
 
 	if (type === "bowling") {
 		const data = await getBowlingStats(date);

@@ -1,83 +1,111 @@
 import { cacheLife } from "next/cache";
-import { groupBy, map, reduce } from "lodash";
+import _ from "lodash";
 
 import { createClient } from "@/lib/supabase/anon";
 import type { BattingStats, BowlingStats } from "@/lib/types";
 import { ballsToOvers } from "@/lib/utils";
 
-export async function getBattingStats(date?: string | null): Promise<BattingStats[]> {
+export async function getBattingStats(dates?: string[] | null): Promise<BattingStats[]> {
 	"use cache";
 	cacheLife("days");
 
 	const supabase = createClient();
-	const { data, error } = date ? await supabase.from("batting").select("*").eq("date", date) : await supabase.from("batting").select("*");
+	const datesArray = dates?.filter(Boolean) ?? [];
 
-	if (error) {
-		throw new Error(error.message);
+	let data: BattingStats[] = [];
+
+	if (datesArray.length > 1) {
+		const results = await Promise.all(
+			datesArray.map((date) => supabase.rpc("get_batting_stats", { date_filter: date }).then(({ data }) => data))
+		);
+		const flattened = results.flat().filter(Boolean) as BattingStats[];
+
+		data = Object.values(_.groupBy(flattened, "player")).map((stats) => {
+			const player = stats[0].player;
+			const innings = _.sumBy(stats, "innings");
+			const runs = _.sumBy(stats, "runs");
+			const balls = _.sumBy(stats, "balls");
+			const not_outs = _.sumBy(stats, "not_outs");
+
+			const average = innings - not_outs === 0 ? 0 : runs / (innings - not_outs);
+			const strike_rate = balls === 0 ? 0 : (runs / balls) * 100;
+
+			return {
+				player,
+				innings,
+				runs,
+				balls,
+				not_outs,
+				fours: _.sumBy(stats, "fours"),
+				sixes: _.sumBy(stats, "sixes"),
+				ducks: _.sumBy(stats, "ducks"),
+				fifties: _.sumBy(stats, "fifties"),
+				hundreds: _.sumBy(stats, "hundreds"),
+				average,
+				strike_rate
+			};
+		});
+	} else {
+		const { data: result, error } = await supabase.rpc("get_batting_stats", { date_filter: datesArray[0] ?? null });
+		if (error) throw new Error(error.message);
+		data = result;
 	}
 
-	const groupedStats = groupBy(data, "player");
-
-	return map(groupedStats, (records, player) => {
-		const sum = reduce(
-			records,
-			(acc, record) => ({
-				runs: acc.runs + record.runs,
-				balls: acc.balls + record.balls,
-				sixes: acc.sixes + record.sixes,
-				fours: acc.fours + record.fours,
-				ducks: acc.ducks + record.ducks,
-				innings: acc.innings + record.innings,
-				not_outs: acc.not_outs + record.not_outs
-			}),
-			{ runs: 0, balls: 0, sixes: 0, fours: 0, ducks: 0, innings: 0, not_outs: 0 }
-		);
-
-		return {
-			...sum,
-			player,
-			average: sum.innings - sum.not_outs > 0 ? Number((sum.runs / (sum.innings - sum.not_outs)).toFixed()) : sum.runs,
-			strike_rate: sum.balls > 0 ? Number(((sum.runs / sum.balls) * 100).toFixed()) : 0
-		};
-	});
+	return data;
 }
 
-export async function getBowlingStats(date?: string | null): Promise<BowlingStats[]> {
+export async function getBowlingStats(dates?: string[] | null): Promise<BowlingStats[]> {
 	"use cache";
 	cacheLife("days");
 
 	const supabase = createClient();
-	const { data, error } = date ? await supabase.from("bowling").select("*").eq("date", date) : await supabase.from("bowling").select("*");
+	const datesArray = dates?.filter(Boolean) ?? [];
 
-	if (error) {
-		throw new Error(error.message);
+	let data: BowlingStats[] = [];
+
+	if (datesArray.length > 1) {
+		const results = await Promise.all(
+			datesArray.map((date) => supabase.rpc("get_bowling_stats", { date_filter: date }).then(({ data }) => data))
+		);
+		const flattened = results.flat().filter(Boolean) as BowlingStats[];
+
+		data = Object.values(_.groupBy(flattened, "player")).map((stats) => {
+			const player = stats[0].player;
+			const innings = _.sumBy(stats, "innings");
+			const balls = _.sumBy(stats, "balls");
+			const wickets = _.sumBy(stats, "wickets");
+			const runs = _.sumBy(stats, "runs");
+
+			const strike_rate = balls === 0 ? 0 : runs / balls;
+
+			const average = wickets === 0 ? 0 : runs / wickets;
+
+			return {
+				player,
+				innings,
+				balls,
+				wickets,
+				runs,
+				dots: _.sumBy(stats, "dots"),
+				wides: _.sumBy(stats, "wides"),
+				no_balls: _.sumBy(stats, "no_balls"),
+				"2fr": _.sumBy(stats, "2fr"),
+				"3fr": _.sumBy(stats, "3fr"),
+				average,
+				strike_rate
+			};
+		});
+	} else {
+		const { data: result, error } = await supabase.rpc("get_bowling_stats", { date_filter: datesArray[0] ?? null });
+		if (error) throw new Error(error.message);
+		data = result;
 	}
 
-	const groupedStats = groupBy(data, "player");
-
-	return map(groupedStats, (records, player) => {
-		const sum = reduce(
-			records,
-			(acc, record) => ({
-				innings: acc.innings + record.innings,
-				balls: acc.balls + record.balls,
-				wickets: acc.wickets + record.wickets,
-				runs: acc.runs + record.runs,
-				dots: acc.dots + record.dots,
-				no_balls: acc.no_balls + record.no_balls,
-				wides: acc.wides + record.wides
-			}),
-			{ wickets: 0, dots: 0, innings: 0, no_balls: 0, balls: 0, runs: 0, wides: 0 }
-		);
-
-		return {
-			...sum,
-			player,
-			balls: ballsToOvers(sum.balls),
-			average: sum.wickets > 0 ? Number((sum.runs / sum.wickets).toFixed(1)) : sum.runs,
-			strike_rate: Number((sum.runs / (sum.balls ?? 0)).toFixed(2))
-		};
-	});
+	return data.map((stat) => ({
+		...stat,
+		balls: ballsToOvers(stat.balls),
+		strike_rate: Number((stat.strike_rate * 6).toFixed(1))
+	}));
 }
 
 export async function getDates() {
@@ -87,9 +115,7 @@ export async function getDates() {
 	const supabase = createClient();
 	const { data, error } = await supabase.from("dates").select("*");
 
-	if (error) {
-		throw new Error(error.message);
-	}
+	if (error) throw new Error(error.message);
 
 	return data;
 }
